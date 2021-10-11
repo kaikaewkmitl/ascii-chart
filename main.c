@@ -2,8 +2,11 @@
 
 int main()
 {
-    Histogram h = {.title = "MY CHART"};
-    Key keys[] = {{"first", 1}, {"second", 22}, {"waitasecondplease", 3}, {"forth", 123456789}};
+    Histogram *h = newHistogram("MY CHART");
+    addKey(h, "first", 1);
+    addKey(h, "second", 22);
+    addKey(h, "adfdsafdfsfdsafafadfafa", 3);
+    addKey(h, "forth", 123456789);
 
-    display(h, keys, 4);
+    display(h);
 }

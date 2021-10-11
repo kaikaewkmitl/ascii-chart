@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #define CHAR_LIMIT 25
 #define DEFAULT_LONGEST_KEYNAME 4
@@ -24,13 +25,27 @@ typedef struct Histogram
     int longestCountDigit;
 } Histogram;
 
-int getLongestKeyName(Histogram h)
+Histogram *newHistogram(char *title)
+{
+    Histogram *h = (Histogram *)malloc(sizeof(Histogram));
+    strcpy(h->title, title);
+    return h;
+}
+
+void addKey(Histogram *h, char *keyName, int count)
+{
+    h->keys = (Key *)realloc(h->keys, h->size++ + 1);
+    strcpy(h->keys[h->size - 1].keyName, keyName);
+    h->keys[h->size - 1].count = count;
+}
+
+int getLongestKeyName(Histogram *h)
 {
     int longest = DEFAULT_LONGEST_KEYNAME;
 
-    for (int i = 0; i < h.size; i++)
+    for (int i = 0; i < h->size; i++)
     {
-        int len = strlen(h.keys[i].keyName);
+        int len = strlen(h->keys[i].keyName);
         if (longest < len)
         {
             longest = len;
@@ -40,13 +55,13 @@ int getLongestKeyName(Histogram h)
     return longest;
 }
 
-int getLongestCountDigit(Histogram h)
+int getLongestCountDigit(Histogram *h)
 {
     int longest = DEFAULT_LONGEST_COUNTDIGIT;
 
-    for (int i = 0; i < h.size; i++)
+    for (int i = 0; i < h->size; i++)
     {
-        int len = 0, c = h.keys[i].count;
+        int len = 0, c = h->keys[i].count;
         while (c != 0)
         {
             c /= 10;
@@ -70,42 +85,40 @@ void printCharNTimes(char c, int n)
     }
 }
 
-void printHeader(Histogram h)
+void printHeader(Histogram *h)
 {
     printf(" Keys ");
 
-    int padding = h.longestKeyName - DEFAULT_LONGEST_KEYNAME;
+    int padding = h->longestKeyName - DEFAULT_LONGEST_KEYNAME;
     printCharNTimes(' ', padding);
 
     printf("| Count \n");
 
-    printCharNTimes('-', h.longestKeyName + 2);
+    printCharNTimes('-', h->longestKeyName + 2);
     printf("+");
-    printCharNTimes('-', h.longestCountDigit + 2);
+    printCharNTimes('-', h->longestCountDigit + 2);
     printf("\n");
 }
 
-void printKeys(Histogram h)
+void printKeys(Histogram *h)
 {
-    for (int i = 0; i < h.size; i++)
+    for (int i = 0; i < h->size; i++)
     {
-        printf(" %s ", h.keys[i].keyName);
+        printf(" %s ", h->keys[i].keyName);
 
-        int padding = h.longestKeyName - strlen(h.keys[i].keyName);
+        int padding = h->longestKeyName - strlen(h->keys[i].keyName);
         printCharNTimes(' ', padding);
 
-        printf("| %d\n", h.keys[i].count);
+        printf("| %d\n", h->keys[i].count);
     }
 }
 
-void display(Histogram h, Key *keys, int n)
+void display(Histogram *h)
 {
-    h.keys = keys;
-    h.size = n;
-    h.longestKeyName = getLongestKeyName(h);
-    h.longestCountDigit = getLongestCountDigit(h);
+    h->longestKeyName = getLongestKeyName(h);
+    h->longestCountDigit = getLongestCountDigit(h);
 
-    printf("\n%s\n\n", h.title);
+    printf("\n%s\n\n", h->title);
 
     printHeader(h);
     printKeys(h);
