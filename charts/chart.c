@@ -1,20 +1,20 @@
-#include "histogram.h"
+#include "chart.h"
 
-Histogram *newHistogram(char *title)
+Chart *newChart(char *title)
 {
-    Histogram *h = (Histogram *)malloc(sizeof(Histogram));
+    Chart *h = (Chart *)malloc(sizeof(Chart));
     strcpy(h->title, title);
     return h;
 }
 
-void addKey(Histogram *h, char *keyName, int count)
+void addKey(Chart *h, char *keyName, int count)
 {
     h->keys = (Key *)realloc(h->keys, h->size++ + 1);
     strcpy(h->keys[h->size - 1].keyName, keyName);
     h->keys[h->size - 1].count = count;
 }
 
-int getLongestKeyName(Histogram *h)
+int getLongestKeyName(Chart *h)
 {
     int longest = DEFAULT_LONGEST_KEYNAME;
 
@@ -30,7 +30,7 @@ int getLongestKeyName(Histogram *h)
     return longest;
 }
 
-int getLongestCountDigit(Histogram *h)
+int getLongestCountDigit(Chart *h)
 {
     int longest = DEFAULT_LONGEST_COUNTDIGIT;
 
@@ -60,7 +60,7 @@ void printCharNTimes(char c, int n)
     }
 }
 
-void printHeader(Histogram *h)
+void printHeader(Chart *h)
 {
     printf(" Keys ");
 
@@ -75,7 +75,7 @@ void printHeader(Histogram *h)
     printf("\n");
 }
 
-void printFooter(Histogram *h)
+void printFooter(Chart *h)
 {
     printCharNTimes('-', h->longestKeyName + 2);
     printf("+");
@@ -83,7 +83,7 @@ void printFooter(Histogram *h)
     printf("\n");
 }
 
-void printKeys(Histogram *h)
+void printKeys(Chart *h)
 {
     for (int i = 0; i < h->size; i++)
     {
@@ -96,7 +96,7 @@ void printKeys(Histogram *h)
     }
 }
 
-void display(Histogram *h)
+void display(Chart *h)
 {
     h->longestKeyName = getLongestKeyName(h);
     h->longestCountDigit = getLongestCountDigit(h);

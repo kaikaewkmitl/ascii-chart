@@ -1,5 +1,5 @@
 build:
-	rm -f histogram.o main.o
-	gcc -c ./charts/histogram.c -o histogram.o
+	rm -f chart.o main.o
+	gcc -c ./charts/chart.c -o chart.o
 	gcc -c main.c -o main.o
-	gcc -o main histogram.o main.o
+	gcc -o main chart.o main.o

@@ -1,5 +1,5 @@
-#ifndef HISTOGRAM_H
-#define HISTOGRAM_H
+#ifndef CHART_H
+#define CHART_H
 
 #include <stdio.h>
 #include <string.h>
@@ -16,30 +16,30 @@ typedef struct Key
     float percentage;
 } Key;
 
-typedef struct Histogram
+typedef struct Chart
 {
     char title[CHAR_LIMIT];
     Key *keys;
     int size;
     int longestKeyName;
     int longestCountDigit;
-} Histogram;
+} Chart;
 
-Histogram *newHistogram(char *title);
+Chart *newChart(char *title);
 
-void addKey(Histogram *h, char *keyName, int count);
+void addKey(Chart *h, char *keyName, int count);
 
-void display(Histogram *h);
+void display(Chart *h);
 
-void printHeader(Histogram *h);
+void printHeader(Chart *h);
 
-void printFooter(Histogram *h);
+void printFooter(Chart *h);
 
-void printKeys(Histogram *h);
+void printKeys(Chart *h);
 
-int getLongestKeyName(Histogram *h);
+int getLongestKeyName(Chart *h);
 
-int getLongestCountDigit(Histogram *h);
+int getLongestCountDigit(Chart *h);
 
 void printCharNTimes(char c, int n);
 
