@@ -10,7 +10,6 @@ Chart *newChart(char *title)
     for (int i = 0; i < N_COLUMNS; i++)
     {
         ch->columnWidth[i] = strlen(COLUMNS[i]);
-        printf("%d\n", ch->columnWidth[i]);
     }
     return ch;
 }
@@ -33,9 +32,9 @@ void addKey(Chart *ch, char *keyName, int count)
 
 void display(Chart *ch)
 {
-    getLongestKeyName(ch);
-    getLongestCountDigit(ch);
-    getMaxCount(ch);
+    updateColumn1Width(ch);
+    updateColumn2Width(ch);
+    updateColumn3Width(ch);
 
     printf("\n %s\n\n", ch->title);
 
@@ -47,11 +46,11 @@ void display(Chart *ch)
 void printHeader(Chart *ch)
 {
     printf(" Keys ");
-    int padding = ch->longestKeyName - strlen(COLUMNS[0]);
+    int padding = ch->columnWidth[0] - strlen(COLUMNS[0]);
     printCharNTimes(' ', padding);
 
     printf("| Count ");
-    padding = ch->longestCountDigit - strlen(COLUMNS[1]);
+    padding = ch->columnWidth[1] - strlen(COLUMNS[1]);
     printCharNTimes(' ', padding);
 
     printf("| Chart \n");
@@ -70,91 +69,65 @@ void printKeys(Chart *ch)
     for (int i = 0; i < ch->size; i++)
     {
         printf(" %s ", ch->keys[i].keyName);
-        int padding = ch->longestKeyName - strlen(ch->keys[i].keyName);
+        int padding = ch->columnWidth[0] - strlen(ch->keys[i].keyName);
         printCharNTimes(' ', padding);
 
-        printf("| %d\n", ch->keys[i].count);
-        // int padding = ch->longestCountDigit - strlen
+        printf("| %d ", ch->keys[i].count);
+        padding = ch->columnWidth[1] - ch->keys[i].countDigit;
+        printCharNTimes(' ', padding);
+
+        printf("| ");
+        printCharNTimes('#', ch->keys[i].count);
+        printf(" \n");
     }
 }
 
 void printNewRow(Chart *ch)
 {
-    if (ch->longestKeyName > strlen(COLUMNS[0]))
+    for (int i = 0; i < N_COLUMNS; i++)
     {
-        printCharNTimes('-', ch->longestKeyName + 2);
-    }
-    else
-    {
-        printCharNTimes('-', strlen(COLUMNS[0]) + 2);
-    }
-
-    printf("+");
-    if (ch->longestCountDigit > strlen(COLUMNS[1]))
-    {
-        printCharNTimes('-', ch->longestCountDigit + 2);
-    }
-    else
-    {
-        printCharNTimes('-', strlen(COLUMNS[1]) + 2);
-    }
-
-    printf("+");
-    if (ch->maxCount > strlen(COLUMNS[2]))
-    {
-        printCharNTimes('-', ch->maxCount + 2);
-    }
-    else
-    {
-        printCharNTimes('-', strlen(COLUMNS[2]) + 2);
+        printCharNTimes('-', ch->columnWidth[i] + 2);
+        if (i != N_COLUMNS - 1)
+        {
+            printf("+");
+        }
     }
 
     printf("\n");
 }
 
-void getLongestKeyName(Chart *ch)
+void updateColumn1Width(Chart *ch)
 {
-    int longest = 0;
-
     for (int i = 0; i < ch->size; i++)
     {
         int len = strlen(ch->keys[i].keyName);
-        if (longest < len)
+        if (ch->columnWidth[0] < len)
         {
-            longest = len;
+            ch->columnWidth[0] = len;
         }
     }
-
-    ch->longestKeyName = longest;
 }
 
-void getLongestCountDigit(Chart *ch)
+void updateColumn2Width(Chart *ch)
 {
-    int longest = 0;
-
     for (int i = 0; i < ch->size; i++)
     {
-        if (longest < ch->keys[i].countDigit)
+        if (ch->columnWidth[1] < ch->keys[i].countDigit)
         {
-            longest = ch->keys[i].countDigit;
+            ch->columnWidth[1] = ch->keys[i].countDigit;
         }
     }
-
-    ch->longestCountDigit = longest;
 }
 
-void getMaxCount(Chart *ch)
+void updateColumn3Width(Chart *ch)
 {
-    int max = 0;
     for (int i = 0; i < ch->size; i++)
     {
-        if (max < ch->keys[i].count)
+        if (ch->columnWidth[2] < ch->keys[i].count)
         {
-            max = ch->keys[i].count;
+            ch->columnWidth[2] = ch->keys[i].count;
         }
     }
-
-    ch->maxCount = max;
 }
 
 void printCharNTimes(char c, int n)

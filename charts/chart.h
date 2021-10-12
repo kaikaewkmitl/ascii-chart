@@ -21,10 +21,7 @@ typedef struct Chart
     char title[CHAR_LIMIT];
     Key *keys;
     int size;
-    int longestKeyName;
     int columnWidth[N_COLUMNS];
-    int longestCountDigit;
-    int maxCount;
 } Chart;
 
 Chart *newChart(char *title);
@@ -41,11 +38,11 @@ void printKeys(Chart *ch);
 
 void printNewRow(Chart *ch);
 
-void getLongestKeyName(Chart *ch);
+void updateColumn1Width(Chart *ch);
 
-void getLongestCountDigit(Chart *ch);
+void updateColumn2Width(Chart *ch);
 
-void getMaxCount(Chart *ch);
+void updateColumn3Width(Chart *ch);
 
 void printCharNTimes(char c, int n);
 
