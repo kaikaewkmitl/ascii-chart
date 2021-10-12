@@ -2,11 +2,11 @@
 
 int main()
 {
-    Chart *h = newChart("MY CHART");
-    addKey(h, "first", 1);
-    addKey(h, "second", 22);
-    addKey(h, "adfdsafdfsfdsafafadfafa", 3);
-    addKey(h, "forth", 10);
+    Chart *ch = newChart("MY CHART");
+    addKey(ch, "first", 1);
+    addKey(ch, "second", 22);
+    addKey(ch, "adfdsafdfsfdsafafadfafa", 3);
+    addKey(ch, "forth", 10);
 
-    display(h);
+    display(ch);
 }

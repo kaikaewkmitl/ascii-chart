@@ -1,55 +1,160 @@
 #include "chart.h"
 
+char *COLUMNS[N_COLUMNS] = {"Keys", "Count", "Chart"};
+
 Chart *newChart(char *title)
 {
-    Chart *h = (Chart *)malloc(sizeof(Chart));
-    strcpy(h->title, title);
-    return h;
-}
+    Chart *ch = (Chart *)malloc(sizeof(Chart));
+    strcpy(ch->title, title);
 
-void addKey(Chart *h, char *keyName, int count)
-{
-    h->keys = (Key *)realloc(h->keys, h->size++ + 1);
-    strcpy(h->keys[h->size - 1].keyName, keyName);
-    h->keys[h->size - 1].count = count;
-}
-
-int getLongestKeyName(Chart *h)
-{
-    int longest = DEFAULT_LONGEST_KEYNAME;
-
-    for (int i = 0; i < h->size; i++)
+    for (int i = 0; i < N_COLUMNS; i++)
     {
-        int len = strlen(h->keys[i].keyName);
+        ch->columnWidth[i] = strlen(COLUMNS[i]);
+        printf("%d\n", ch->columnWidth[i]);
+    }
+    return ch;
+}
+
+void addKey(Chart *ch, char *keyName, int count)
+{
+    ch->keys = (Key *)realloc(ch->keys, ch->size++ + 1);
+    strcpy(ch->keys[ch->size - 1].keyName, keyName);
+    ch->keys[ch->size - 1].count = count;
+
+    int digit = 0;
+    while (count != 0)
+    {
+        count /= 10;
+        digit++;
+    }
+
+    ch->keys[ch->size - 1].countDigit = digit;
+}
+
+void display(Chart *ch)
+{
+    getLongestKeyName(ch);
+    getLongestCountDigit(ch);
+    getMaxCount(ch);
+
+    printf("\n %s\n\n", ch->title);
+
+    printHeader(ch);
+    printKeys(ch);
+    printFooter(ch);
+}
+
+void printHeader(Chart *ch)
+{
+    printf(" Keys ");
+    int padding = ch->longestKeyName - strlen(COLUMNS[0]);
+    printCharNTimes(' ', padding);
+
+    printf("| Count ");
+    padding = ch->longestCountDigit - strlen(COLUMNS[1]);
+    printCharNTimes(' ', padding);
+
+    printf("| Chart \n");
+
+    printNewRow(ch);
+}
+
+void printFooter(Chart *ch)
+{
+    printNewRow(ch);
+    printf("\n");
+}
+
+void printKeys(Chart *ch)
+{
+    for (int i = 0; i < ch->size; i++)
+    {
+        printf(" %s ", ch->keys[i].keyName);
+        int padding = ch->longestKeyName - strlen(ch->keys[i].keyName);
+        printCharNTimes(' ', padding);
+
+        printf("| %d\n", ch->keys[i].count);
+        // int padding = ch->longestCountDigit - strlen
+    }
+}
+
+void printNewRow(Chart *ch)
+{
+    if (ch->longestKeyName > strlen(COLUMNS[0]))
+    {
+        printCharNTimes('-', ch->longestKeyName + 2);
+    }
+    else
+    {
+        printCharNTimes('-', strlen(COLUMNS[0]) + 2);
+    }
+
+    printf("+");
+    if (ch->longestCountDigit > strlen(COLUMNS[1]))
+    {
+        printCharNTimes('-', ch->longestCountDigit + 2);
+    }
+    else
+    {
+        printCharNTimes('-', strlen(COLUMNS[1]) + 2);
+    }
+
+    printf("+");
+    if (ch->maxCount > strlen(COLUMNS[2]))
+    {
+        printCharNTimes('-', ch->maxCount + 2);
+    }
+    else
+    {
+        printCharNTimes('-', strlen(COLUMNS[2]) + 2);
+    }
+
+    printf("\n");
+}
+
+void getLongestKeyName(Chart *ch)
+{
+    int longest = 0;
+
+    for (int i = 0; i < ch->size; i++)
+    {
+        int len = strlen(ch->keys[i].keyName);
         if (longest < len)
         {
             longest = len;
         }
     }
 
-    return longest;
+    ch->longestKeyName = longest;
 }
 
-int getLongestCountDigit(Chart *h)
+void getLongestCountDigit(Chart *ch)
 {
-    int longest = DEFAULT_LONGEST_COUNTDIGIT;
+    int longest = 0;
 
-    for (int i = 0; i < h->size; i++)
+    for (int i = 0; i < ch->size; i++)
     {
-        int len = 0, c = h->keys[i].count;
-        while (c != 0)
+        if (longest < ch->keys[i].countDigit)
         {
-            c /= 10;
-            len++;
-        }
-
-        if (longest < len)
-        {
-            longest = len;
+            longest = ch->keys[i].countDigit;
         }
     }
 
-    return longest;
+    ch->longestCountDigit = longest;
+}
+
+void getMaxCount(Chart *ch)
+{
+    int max = 0;
+    for (int i = 0; i < ch->size; i++)
+    {
+        if (max < ch->keys[i].count)
+        {
+            max = ch->keys[i].count;
+        }
+    }
+
+    ch->maxCount = max;
 }
 
 void printCharNTimes(char c, int n)
@@ -58,52 +163,4 @@ void printCharNTimes(char c, int n)
     {
         printf("%c", c);
     }
-}
-
-void printHeader(Chart *h)
-{
-    printf(" Keys ");
-
-    int padding = h->longestKeyName - DEFAULT_LONGEST_KEYNAME;
-    printCharNTimes(' ', padding);
-
-    printf("| Count \n");
-
-    printCharNTimes('-', h->longestKeyName + 2);
-    printf("+");
-    printCharNTimes('-', h->longestCountDigit + 2);
-    printf("\n");
-}
-
-void printFooter(Chart *h)
-{
-    printCharNTimes('-', h->longestKeyName + 2);
-    printf("+");
-    printCharNTimes('-', h->longestCountDigit + 2);
-    printf("\n");
-}
-
-void printKeys(Chart *h)
-{
-    for (int i = 0; i < h->size; i++)
-    {
-        printf(" %s ", h->keys[i].keyName);
-
-        int padding = h->longestKeyName - strlen(h->keys[i].keyName);
-        printCharNTimes(' ', padding);
-
-        printf("| %d\n", h->keys[i].count);
-    }
-}
-
-void display(Chart *h)
-{
-    h->longestKeyName = getLongestKeyName(h);
-    h->longestCountDigit = getLongestCountDigit(h);
-
-    printf("\n %s\n\n", h->title);
-
-    printHeader(h);
-    printKeys(h);
-    printFooter(h);
 }

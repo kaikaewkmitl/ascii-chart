@@ -6,13 +6,13 @@
 #include <stdlib.h>
 
 #define CHAR_LIMIT 25
-#define DEFAULT_LONGEST_KEYNAME 4
-#define DEFAULT_LONGEST_COUNTDIGIT 5
+#define N_COLUMNS 3
 
 typedef struct Key
 {
     char keyName[CHAR_LIMIT];
     int count;
+    int countDigit;
     float percentage;
 } Key;
 
@@ -22,24 +22,30 @@ typedef struct Chart
     Key *keys;
     int size;
     int longestKeyName;
+    int columnWidth[N_COLUMNS];
     int longestCountDigit;
+    int maxCount;
 } Chart;
 
 Chart *newChart(char *title);
 
-void addKey(Chart *h, char *keyName, int count);
+void addKey(Chart *ch, char *keyName, int count);
 
-void display(Chart *h);
+void display(Chart *ch);
 
-void printHeader(Chart *h);
+void printHeader(Chart *ch);
 
-void printFooter(Chart *h);
+void printFooter(Chart *ch);
 
-void printKeys(Chart *h);
+void printKeys(Chart *ch);
 
-int getLongestKeyName(Chart *h);
+void printNewRow(Chart *ch);
 
-int getLongestCountDigit(Chart *h);
+void getLongestKeyName(Chart *ch);
+
+void getLongestCountDigit(Chart *ch);
+
+void getMaxCount(Chart *ch);
 
 void printCharNTimes(char c, int n);
 
