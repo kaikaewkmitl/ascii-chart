@@ -89,40 +89,39 @@ void addKey(Chart *ch, char *keyName, int count)
     ch->len++;
 }
 
-void printCharNTimes(char c, int n)
+void printStrNTimes(char *str, int n)
 {
     for (int i = 0; i < n; i++)
     {
-        printf("%c", c);
+        printf("%s", str);
     }
 }
 
 void printNewRow(Chart *ch)
 {
-    printf("%s", COLOR_WHITE);
     for (int i = 0; i < N_COLUMNS; i++)
     {
-        printCharNTimes('-', ch->columnWidth[i] + 2);
+        printStrNTimes("-", ch->columnWidth[i] + 2);
         if (i != N_COLUMNS - 1)
         {
             printf("+");
         }
     }
 
-    printf("%s\n", COLOR_RESET);
+    printf("\n");
 }
 
 void printHeader(Chart *ch)
 {
-    printf(" %sKeys%s ", COLOR_GREEN, COLOR_RESET);
+    printf(" %s%s%s ", COLOR_YELLOW, COLUMNS[0], COLOR_RESET);
     int padding = ch->columnWidth[0] - strlen(COLUMNS[0]);
-    printCharNTimes(' ', padding);
+    printStrNTimes(" ", padding);
 
-    printf("%s| %sCount%s ", COLOR_WHITE, COLOR_CYAN, COLOR_RESET);
+    printf("| %s%s%s ", COLOR_YELLOW, COLUMNS[1], COLOR_RESET);
     padding = ch->columnWidth[1] - strlen(COLUMNS[1]);
-    printCharNTimes(' ', padding);
+    printStrNTimes(" ", padding);
 
-    printf("%s| %sChart%s \n", COLOR_WHITE, COLOR_YELLOW, COLOR_RESET);
+    printf("| %s%s%s \n", COLOR_YELLOW, COLUMNS[2], COLOR_RESET);
 
     printNewRow(ch);
 }
@@ -137,16 +136,16 @@ void printKeys(Chart *ch)
 {
     for (int i = 0; i < ch->len; i++)
     {
-        printf(" %s%s%s ", COLOR_GREEN, ch->keys[i].keyName, COLOR_RESET);
+        printf(" %s%s%s ", COLOR_YELLOW, ch->keys[i].keyName, COLOR_RESET);
         int padding = ch->columnWidth[0] - strlen(ch->keys[i].keyName);
-        printCharNTimes(' ', padding);
+        printStrNTimes(" ", padding);
 
-        printf("%s| %s%d%s ", COLOR_WHITE, COLOR_CYAN, ch->keys[i].count, COLOR_RESET);
+        printf("| %s%d%s ", COLOR_YELLOW, ch->keys[i].count, COLOR_RESET);
         padding = ch->columnWidth[1] - ch->keys[i].countDigit;
-        printCharNTimes(' ', padding);
+        printStrNTimes(" ", padding);
 
-        printf("%s| %s", COLOR_WHITE, COLOR_YELLOW);
-        printCharNTimes('#', ch->keys[i].count);
+        printf("| %s", COLOR_YELLOW);
+        printStrNTimes("█", ch->keys[i].count);
         printf("%s\n", COLOR_RESET);
     }
 }
@@ -191,11 +190,9 @@ void display(Chart *ch)
     updateColumn2Width(ch);
     updateColumn3Width(ch);
 
-    printf("\n %s%s\n\n", COLOR_WHITE, ch->title);
+    printf("\n %s%s%s\n\n", COLOR_YELLOW, ch->title, COLOR_RESET);
 
     printHeader(ch);
     printKeys(ch);
     printFooter(ch);
-
-    printf("%s", COLOR_RESET);
 }
