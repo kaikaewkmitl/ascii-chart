@@ -3,6 +3,7 @@
 int main()
 {
     Chart *ch = newChart("MY CHART");
+
     addKey(ch, "first", 1);
     addKey(ch, "second", 22);
     addKey(ch, "adfdsafdfsfdsafafadfafa", 3);

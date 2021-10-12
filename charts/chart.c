@@ -1,5 +1,6 @@
 #include "chart.h"
 
+#define COLOR_BLACK "\033[30m"
 #define COLOR_RED "\033[31m"
 #define COLOR_GREEN "\033[32m"
 #define COLOR_YELLOW "\033[33m"
@@ -8,27 +9,75 @@
 #define COLOR_CYAN "\033[36m"
 #define COLOR_WHITE "\033[37m"
 #define COLOR_RESET "\033[0m"
+#define CHAR_LIMIT 25
+#define N_COLUMNS 3
+#define GROWTH_FACTOR 2
+
+typedef struct Key
+{
+    char keyName[CHAR_LIMIT];
+    int count;
+    int countDigit;
+    float percentage;
+} Key;
+
+struct Chart
+{
+    char title[CHAR_LIMIT];
+    int columnWidth[N_COLUMNS];
+
+    // size as in keys max capacity,
+    // len as in total no. of keys
+    Key *keys;
+    int size;
+    int len;
+};
 
 char *COLUMNS[N_COLUMNS] = {"Keys", "Count", "Chart"};
 
 Chart *newChart(char *title)
 {
     Chart *ch = (Chart *)malloc(sizeof(Chart));
+    if (ch == NULL)
+    {
+        fprintf(stderr, "failed to allocate a new Chart\n");
+        return ch;
+    }
+
+    ch->size++;
+    ch->keys = (Key *)malloc(sizeof(Key));
+    if (ch->keys == NULL)
+    {
+        fprintf(stderr, "failed to allocate a new Chart\n");
+        return ch;
+    }
+
     strcpy(ch->title, title);
 
     for (int i = 0; i < N_COLUMNS; i++)
     {
         ch->columnWidth[i] = strlen(COLUMNS[i]);
     }
+
     return ch;
 }
 
 void addKey(Chart *ch, char *keyName, int count)
 {
-    ch->keys = (Key *)realloc(ch->keys, ch->size++ + 1);
-    strcpy(ch->keys[ch->size - 1].keyName, keyName);
-    ch->keys[ch->size - 1].count = count;
+    if (ch->len == ch->size)
+    {
+        ch->size *= GROWTH_FACTOR;
+        ch->keys = (Key *)realloc(ch->keys, ch->size * sizeof(Key));
+        if (ch->keys == NULL)
+        {
+            fprintf(stderr, "failed to allocate new keys\n");
+            return;
+        }
+    }
 
+    strcpy(ch->keys[ch->len].keyName, keyName);
+
+    ch->keys[ch->len].count = count;
     int digit = 0;
     while (count != 0)
     {
@@ -36,22 +85,31 @@ void addKey(Chart *ch, char *keyName, int count)
         digit++;
     }
 
-    ch->keys[ch->size - 1].countDigit = digit;
+    ch->keys[ch->len].countDigit = digit;
+    ch->len++;
 }
 
-void display(Chart *ch)
+void printCharNTimes(char c, int n)
 {
-    updateColumn1Width(ch);
-    updateColumn2Width(ch);
-    updateColumn3Width(ch);
+    for (int i = 0; i < n; i++)
+    {
+        printf("%c", c);
+    }
+}
 
-    printf("\n %s%s\n\n", COLOR_WHITE, ch->title);
+void printNewRow(Chart *ch)
+{
+    printf("%s", COLOR_WHITE);
+    for (int i = 0; i < N_COLUMNS; i++)
+    {
+        printCharNTimes('-', ch->columnWidth[i] + 2);
+        if (i != N_COLUMNS - 1)
+        {
+            printf("+");
+        }
+    }
 
-    printHeader(ch);
-    printKeys(ch);
-    printFooter(ch);
-
-    printf("%s", COLOR_RESET);
+    printf("%s\n", COLOR_RESET);
 }
 
 void printHeader(Chart *ch)
@@ -77,7 +135,7 @@ void printFooter(Chart *ch)
 
 void printKeys(Chart *ch)
 {
-    for (int i = 0; i < ch->size; i++)
+    for (int i = 0; i < ch->len; i++)
     {
         printf(" %s%s%s ", COLOR_GREEN, ch->keys[i].keyName, COLOR_RESET);
         int padding = ch->columnWidth[0] - strlen(ch->keys[i].keyName);
@@ -93,24 +151,9 @@ void printKeys(Chart *ch)
     }
 }
 
-void printNewRow(Chart *ch)
-{
-    printf("%s", COLOR_WHITE);
-    for (int i = 0; i < N_COLUMNS; i++)
-    {
-        printCharNTimes('-', ch->columnWidth[i] + 2);
-        if (i != N_COLUMNS - 1)
-        {
-            printf("+");
-        }
-    }
-
-    printf("%s\n", COLOR_RESET);
-}
-
 void updateColumn1Width(Chart *ch)
 {
-    for (int i = 0; i < ch->size; i++)
+    for (int i = 0; i < ch->len; i++)
     {
         int len = strlen(ch->keys[i].keyName);
         if (ch->columnWidth[0] < len)
@@ -122,7 +165,7 @@ void updateColumn1Width(Chart *ch)
 
 void updateColumn2Width(Chart *ch)
 {
-    for (int i = 0; i < ch->size; i++)
+    for (int i = 0; i < ch->len; i++)
     {
         if (ch->columnWidth[1] < ch->keys[i].countDigit)
         {
@@ -133,7 +176,7 @@ void updateColumn2Width(Chart *ch)
 
 void updateColumn3Width(Chart *ch)
 {
-    for (int i = 0; i < ch->size; i++)
+    for (int i = 0; i < ch->len; i++)
     {
         if (ch->columnWidth[2] < ch->keys[i].count)
         {
@@ -142,10 +185,17 @@ void updateColumn3Width(Chart *ch)
     }
 }
 
-void printCharNTimes(char c, int n)
+void display(Chart *ch)
 {
-    for (int i = 0; i < n; i++)
-    {
-        printf("%c", c);
-    }
+    updateColumn1Width(ch);
+    updateColumn2Width(ch);
+    updateColumn3Width(ch);
+
+    printf("\n %s%s\n\n", COLOR_WHITE, ch->title);
+
+    printHeader(ch);
+    printKeys(ch);
+    printFooter(ch);
+
+    printf("%s", COLOR_RESET);
 }
