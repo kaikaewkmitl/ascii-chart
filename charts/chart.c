@@ -51,6 +51,10 @@ void printNewRow(Chart *ch);
 
 void printStrNTimes(char *str, int n);
 
+int cmpAscending(const void *a, const void *b);
+
+int cmpDescending(const void *a, const void *b);
+
 Chart *newChart(char *title)
 {
     Chart *ch = (Chart *)malloc(sizeof(Chart));
@@ -103,6 +107,19 @@ void addKey(Chart *ch, char *keyName, int count)
 
     ch->keys[ch->len].countDigit = digit;
     ch->len++;
+}
+
+void sort(Chart *ch, eOrder order)
+{
+    switch (order)
+    {
+    case Ascending:
+        qsort(ch->keys, ch->len, sizeof(Key), cmpAscending);
+        break;
+    case Descending:
+        qsort(ch->keys, ch->len, sizeof(Key), cmpDescending);
+        break;
+    }
 }
 
 void display(Chart *ch)
@@ -211,4 +228,16 @@ void printStrNTimes(char *str, int n)
     {
         printf("%s", str);
     }
+}
+
+int cmpAscending(const void *a, const void *b)
+{
+    Key *k1 = (Key *)a, *k2 = (Key *)b;
+    return k1->count - k2->count;
+}
+
+int cmpDescending(const void *a, const void *b)
+{
+    Key *k1 = (Key *)a, *k2 = (Key *)b;
+    return k2->count - k1->count;
 }

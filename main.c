@@ -9,5 +9,7 @@ int main()
     addKey(ch, "adfdsafdfsfdsafafadfafa", 3);
     addKey(ch, "forth", 10);
 
+    sort(ch, Descending);
+
     display(ch);
 }
