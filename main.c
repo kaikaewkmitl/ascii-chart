@@ -1,21 +1,58 @@
 #include "chart/chart.h"
+#include "fileHandler/fileHandler.h"
 
 int main(void)
 {
+    FILE *f = openFile("../sample1.txt");
+    if (!f)
+    {
+        return EXIT_FAILURE;
+    }
+
+    int freq[128] = {0};
+    parseFile(f, freq);
+
     Chart *ch = newChart("MY CHART");
     if (!ch)
     {
         return EXIT_FAILURE;
     }
 
-    if (addKey(ch, "first", 1) == RETURN_FAILURE)
+    for (int i = 0; i < 128; i++)
     {
-        return EXIT_FAILURE;
+        if (freq[i] > 0)
+        {
+            switch (i)
+            {
+            case '\n':
+                if (addKey(ch, "\\n", freq[i]) == RETURN_FAILURE)
+                {
+                    return EXIT_FAILURE;
+                }
+                break;
+            case ' ':
+                if (addKey(ch, "space", freq[i]) == RETURN_FAILURE)
+                {
+                    return EXIT_FAILURE;
+                }
+                break;
+            case '\t':
+                if (addKey(ch, "\\t", freq[i]) == RETURN_FAILURE)
+                {
+                    return EXIT_FAILURE;
+                }
+                break;
+            default:
+            {
+                char c[2] = {i, 0};
+                if (addKey(ch, c, freq[i]) == RETURN_FAILURE)
+                {
+                    return EXIT_FAILURE;
+                }
+            }
+            }
+        }
     }
-
-    addKey(ch, "second", 22);
-    addKey(ch, "adfdsafdfsfdsafafadfafa", 3);
-    addKey(ch, "forth", 10);
 
     sortChart(ch, Descending);
     displayChart(ch);
