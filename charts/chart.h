@@ -5,6 +5,9 @@
 #include <string.h>
 #include <stdlib.h>
 
+#define RETURN_SUCCESS 0
+#define RETURN_FAILURE 1
+
 typedef struct Chart Chart;
 
 typedef enum eOrder
@@ -15,12 +18,14 @@ typedef enum eOrder
 
 Chart *newChart(char *title);
 
-void addKey(Chart *ch, char *keyName, int count);
+int addKey(Chart *ch, char *keyName, int count);
 
-void display(Chart *ch);
+// sorts by count in ascending
+// or descending order
+void sortChart(Chart *ch, eOrder order);
 
-// sort keys in ascending or
-// descending order
-void sort(Chart *ch, eOrder order);
+void displayChart(Chart *ch);
+
+void deleteChart(Chart *ch);
 
 #endif

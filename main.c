@@ -1,15 +1,22 @@
 #include "charts/chart.h"
 
-int main()
+int main(void)
 {
     Chart *ch = newChart("MY CHART");
+    if (!ch)
+    {
+        return EXIT_FAILURE;
+    }
 
-    addKey(ch, "first", 1);
+    if (addKey(ch, "first", 1) == RETURN_FAILURE)
+    {
+        return EXIT_FAILURE;
+    }
     addKey(ch, "second", 22);
     addKey(ch, "adfdsafdfsfdsafafadfafa", 3);
     addKey(ch, "forth", 10);
 
-    sort(ch, Descending);
-
-    display(ch);
+    sortChart(ch, Descending);
+    displayChart(ch);
+    return EXIT_SUCCESS;
 }

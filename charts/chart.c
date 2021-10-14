@@ -33,26 +33,17 @@ struct Chart
     int len;
 };
 
-char *COLUMNS[N_COLUMNS] = {"Keys", "Count", "Chart"};
+static char *COLUMNS[N_COLUMNS] = {"Keys", "Count", "Chart"};
 
 void updateColumn1Width(Chart *ch);
-
 void updateColumn2Width(Chart *ch);
-
 void updateColumn3Width(Chart *ch);
-
 void printHeader(Chart *ch);
-
 void printFooter(Chart *ch);
-
 void printKeys(Chart *ch);
-
 void printNewRow(Chart *ch);
-
 void printStrNTimes(char *str, int n);
-
 int cmpAscending(const void *a, const void *b);
-
 int cmpDescending(const void *a, const void *b);
 
 Chart *newChart(char *title)
@@ -61,7 +52,7 @@ Chart *newChart(char *title)
     if (ch == NULL)
     {
         fprintf(stderr, "failed to allocate a new Chart\n");
-        exit(-1);
+        return NULL;
     }
 
     ch->size++;
@@ -69,7 +60,7 @@ Chart *newChart(char *title)
     if (ch->keys == NULL)
     {
         fprintf(stderr, "failed to allocate a new Chart\n");
-        exit(-1);
+        return NULL;
     }
 
     strcpy(ch->title, title);
@@ -82,7 +73,7 @@ Chart *newChart(char *title)
     return ch;
 }
 
-void addKey(Chart *ch, char *keyName, int count)
+int addKey(Chart *ch, char *keyName, int count)
 {
     if (ch->len == ch->size)
     {
@@ -90,8 +81,8 @@ void addKey(Chart *ch, char *keyName, int count)
         ch->keys = (Key *)realloc(ch->keys, ch->size * sizeof(Key));
         if (ch->keys == NULL)
         {
-            fprintf(stderr, "failed to allocate new keys\n");
-            exit(-1);
+            fprintf(stderr, "failed to allocate a new key\n");
+            return RETURN_FAILURE;
         }
     }
 
@@ -107,9 +98,10 @@ void addKey(Chart *ch, char *keyName, int count)
 
     ch->keys[ch->len].countDigit = digit;
     ch->len++;
+    return RETURN_SUCCESS;
 }
 
-void sort(Chart *ch, eOrder order)
+void sortChart(Chart *ch, eOrder order)
 {
     switch (order)
     {
@@ -122,7 +114,7 @@ void sort(Chart *ch, eOrder order)
     }
 }
 
-void display(Chart *ch)
+void displayChart(Chart *ch)
 {
     updateColumn1Width(ch);
     updateColumn2Width(ch);
@@ -133,6 +125,17 @@ void display(Chart *ch)
     printHeader(ch);
     printKeys(ch);
     printFooter(ch);
+}
+
+void deleteChart(Chart *ch)
+{
+    if (ch)
+    {
+        free(ch->keys);
+        free(ch);
+
+        printf("LOL\n");
+    }
 }
 
 void updateColumn1Width(Chart *ch)
