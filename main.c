@@ -1,4 +1,4 @@
-#include "charts/chart.h"
+#include "chart/chart.h"
 
 int main(void)
 {
@@ -12,6 +12,7 @@ int main(void)
     {
         return EXIT_FAILURE;
     }
+
     addKey(ch, "second", 22);
     addKey(ch, "adfdsafdfsfdsafafadfafa", 3);
     addKey(ch, "forth", 10);
