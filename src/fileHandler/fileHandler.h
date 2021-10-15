@@ -6,7 +6,7 @@
 #include <stdlib.h>
 
 // open file for read
-FILE *openFile(char *filename);
+FILE *newFile(char *filename);
 
 void countChars(FILE *f, int *count);
 

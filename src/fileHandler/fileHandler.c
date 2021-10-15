@@ -2,15 +2,16 @@
 
 #define PREF_PATH "../src/"
 
-FILE *openFile(char *filename)
+FILE *newFile(char *filename)
 {
     char *tmp = (char *)malloc(strlen(PREF_PATH) + strlen(filename) + 1);
-    strcat(strcat(tmp, PREF_PATH), filename);
+    strcpy(tmp, PREF_PATH);
+    strcat(tmp, filename);
 
     FILE *f = fopen(tmp, "r");
     if (!f)
     {
-        fprintf(stderr, "failed to open a file %s\n", filename);
+        fprintf(stderr, "failed to open a file %s\n", tmp);
     }
 
     free(tmp);
