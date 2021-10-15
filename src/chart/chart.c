@@ -38,6 +38,7 @@ static char *COLUMNS[N_COLUMNS] = {"Keys", "Count", "Chart"};
 void updateColumn1Width(Chart *ch);
 void updateColumn2Width(Chart *ch);
 void updateColumn3Width(Chart *ch);
+int addKey(Chart *ch, char *keyname, int count);
 void printHeader(Chart *ch);
 void printFooter(Chart *ch);
 void printKeys(Chart *ch);
@@ -73,31 +74,44 @@ Chart *newChart(char *title)
     return ch;
 }
 
-int addKey(Chart *ch, char *keyname, int count)
+int addKeys(Chart *ch, int *count)
 {
-    if (ch->len == ch->size)
+    for (int i = 0; i < N_ASCII; i++)
     {
-        ch->size *= GROWTH_FACTOR;
-        ch->keys = (Key *)realloc(ch->keys, ch->size * sizeof(Key));
-        if (ch->keys == NULL)
+        if (count[i] > 0)
         {
-            fprintf(stderr, "failed to allocate a new key\n");
-            return RETURN_FAILURE;
+            switch (i)
+            {
+            case '\n':
+                if (addKey(ch, "\\n", count[i]) == RETURN_FAILURE)
+                {
+                    return RETURN_FAILURE;
+                }
+                break;
+            case ' ':
+                if (addKey(ch, "space", count[i]) == RETURN_FAILURE)
+                {
+                    return RETURN_FAILURE;
+                }
+                break;
+            case '\t':
+                if (addKey(ch, "\\t", count[i]) == RETURN_FAILURE)
+                {
+                    return RETURN_FAILURE;
+                }
+                break;
+            default:
+            {
+                char keyname[2] = {i, 0};
+                if (addKey(ch, keyname, count[i]) == RETURN_FAILURE)
+                {
+                    return RETURN_FAILURE;
+                }
+            }
+            }
         }
     }
 
-    strcpy(ch->keys[ch->len].keyname, keyname);
-
-    ch->keys[ch->len].count = count;
-    int digit = 0;
-    while (count != 0)
-    {
-        count /= 10;
-        digit++;
-    }
-
-    ch->keys[ch->len].countDigit = digit;
-    ch->len++;
     return RETURN_SUCCESS;
 }
 
@@ -133,8 +147,6 @@ void deleteChart(Chart *ch)
     {
         free(ch->keys);
         free(ch);
-
-        printf("LOL\n");
     }
 }
 
@@ -170,6 +182,34 @@ void updateColumn3Width(Chart *ch)
             ch->columnWidth[2] = ch->keys[i].count;
         }
     }
+}
+
+int addKey(Chart *ch, char *keyname, int count)
+{
+    if (ch->len == ch->size)
+    {
+        ch->size *= GROWTH_FACTOR;
+        ch->keys = (Key *)realloc(ch->keys, ch->size * sizeof(Key));
+        if (ch->keys == NULL)
+        {
+            fprintf(stderr, "failed to allocate a new key\n");
+            return RETURN_FAILURE;
+        }
+    }
+
+    strcpy(ch->keys[ch->len].keyname, keyname);
+
+    ch->keys[ch->len].count = count;
+    int digit = 0;
+    while (count != 0)
+    {
+        count /= 10;
+        digit++;
+    }
+
+    ch->keys[ch->len].countDigit = digit;
+    ch->len++;
+    return RETURN_SUCCESS;
 }
 
 void printHeader(Chart *ch)

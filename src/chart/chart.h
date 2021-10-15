@@ -7,6 +7,7 @@
 
 #define RETURN_SUCCESS 0
 #define RETURN_FAILURE 1
+#define N_ASCII 128
 
 typedef struct Chart Chart;
 
@@ -18,7 +19,7 @@ typedef enum eOrder
 
 Chart *newChart(char *title);
 
-int addKey(Chart *ch, char *keyname, int count);
+int addKeys(Chart *ch, int *count);
 
 // sorts by count in ascending
 // or descending order
