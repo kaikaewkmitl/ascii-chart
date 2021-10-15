@@ -3,6 +3,11 @@
 FILE *openFile(char *filename)
 {
     FILE *f = fopen(filename, "r");
+    if (!f)
+    {
+        fprintf(stderr, "failed to open a file %s\n", filename);
+    }
+
     return f;
 }
 

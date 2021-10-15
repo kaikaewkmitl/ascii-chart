@@ -6,7 +6,6 @@ int main(void)
     FILE *f = openFile("../src/sample1.txt");
     if (!f)
     {
-        fprintf(stderr, "failed to open a file");
         return EXIT_FAILURE;
     }
 
