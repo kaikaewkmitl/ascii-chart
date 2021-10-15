@@ -1,5 +1,6 @@
 #include "chart/chart.h"
 #include "fileHandler/fileHandler.h"
+#include "helper/helper.h"
 
 int main(void)
 {
@@ -18,40 +19,9 @@ int main(void)
         return EXIT_FAILURE;
     }
 
-    for (int i = 0; i < 128; i++)
+    if (charCount(ch, freq) == RETURN_FAILURE)
     {
-        if (freq[i] > 0)
-        {
-            switch (i)
-            {
-            case '\n':
-                if (addKey(ch, "\\n", freq[i]) == RETURN_FAILURE)
-                {
-                    return EXIT_FAILURE;
-                }
-                break;
-            case ' ':
-                if (addKey(ch, "space", freq[i]) == RETURN_FAILURE)
-                {
-                    return EXIT_FAILURE;
-                }
-                break;
-            case '\t':
-                if (addKey(ch, "\\t", freq[i]) == RETURN_FAILURE)
-                {
-                    return EXIT_FAILURE;
-                }
-                break;
-            default:
-            {
-                char c[2] = {i, 0};
-                if (addKey(ch, c, freq[i]) == RETURN_FAILURE)
-                {
-                    return EXIT_FAILURE;
-                }
-            }
-            }
-        }
+        return EXIT_FAILURE;
     }
 
     sortChart(ch, Descending);
