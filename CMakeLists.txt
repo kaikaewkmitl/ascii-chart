@@ -1,7 +1,8 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.12)
 
 project(ascii-chart)
 
-include_directories(${PROJECT_SOURCE_DIR})
-add_executable(ascii-chart main.c chart/chart.c fileHandler/fileHandler.c)
+file(GLOB_RECURSE SRC_FILES src/*.c)
+
+add_executable(ascii-chart ${SRC_FILES})
  
