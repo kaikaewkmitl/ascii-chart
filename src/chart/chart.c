@@ -15,7 +15,7 @@
 
 typedef struct Key
 {
-    char keyName[CHAR_LIMIT];
+    char keyname[CHAR_LIMIT];
     int count;
     int countDigit;
     float percentage;
@@ -73,7 +73,7 @@ Chart *newChart(char *title)
     return ch;
 }
 
-int addKey(Chart *ch, char *keyName, int count)
+int addKey(Chart *ch, char *keyname, int count)
 {
     if (ch->len == ch->size)
     {
@@ -86,7 +86,7 @@ int addKey(Chart *ch, char *keyName, int count)
         }
     }
 
-    strcpy(ch->keys[ch->len].keyName, keyName);
+    strcpy(ch->keys[ch->len].keyname, keyname);
 
     ch->keys[ch->len].count = count;
     int digit = 0;
@@ -142,7 +142,7 @@ void updateColumn1Width(Chart *ch)
 {
     for (int i = 0; i < ch->len; i++)
     {
-        int len = strlen(ch->keys[i].keyName);
+        int len = strlen(ch->keys[i].keyname);
         if (ch->columnWidth[0] < len)
         {
             ch->columnWidth[0] = len;
@@ -197,8 +197,8 @@ void printKeys(Chart *ch)
 {
     for (int i = 0; i < ch->len; i++)
     {
-        printf(" %s%s%s ", COLOR_YELLOW, ch->keys[i].keyName, COLOR_RESET);
-        int padding = ch->columnWidth[0] - strlen(ch->keys[i].keyName);
+        printf(" %s%s%s ", COLOR_YELLOW, ch->keys[i].keyname, COLOR_RESET);
+        int padding = ch->columnWidth[0] - strlen(ch->keys[i].keyname);
         printStrNTimes(" ", padding);
 
         printf("| %s%d%s ", COLOR_YELLOW, ch->keys[i].count, COLOR_RESET);

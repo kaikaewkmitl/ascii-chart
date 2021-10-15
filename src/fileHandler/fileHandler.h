@@ -5,6 +5,6 @@
 
 FILE *openFile(char *filename);
 
-void parseFile(FILE *f, int freq[]);
+void parseFile(FILE *f, int *count);
 
 #endif

@@ -11,10 +11,10 @@ FILE *openFile(char *filename)
     return f;
 }
 
-void parseFile(FILE *f, int freq[])
+void parseFile(FILE *f, int *count)
 {
     for (int c; (c = fgetc(f)) != EOF;)
     {
-        freq[c]++;
+        count[c]++;
     }
 }
