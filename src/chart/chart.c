@@ -1,6 +1,5 @@
 #include "chart.h"
 
-#define CHAR_LIMIT 25
 #define N_COLUMNS 3
 #define GROWTH_FACTOR 2
 #define BAR "█"
@@ -46,7 +45,7 @@ Chart *newChart(char *title)
     Chart *ch = (Chart *)malloc(sizeof(Chart));
     if (ch == NULL)
     {
-        fprintf(stderr, "failed to allocate a new Chart\n");
+        PRINT_ERROR("failed to allocate a new Chart\n");
         return NULL;
     }
 
@@ -54,7 +53,7 @@ Chart *newChart(char *title)
     ch->keys = (Key *)malloc(sizeof(Key));
     if (ch->keys == NULL)
     {
-        fprintf(stderr, "failed to allocate a new Chart\n");
+        PRINT_ERROR("failed to allocate a new Chart\n");
         return NULL;
     }
 
@@ -187,7 +186,7 @@ int addKey(Chart *ch, char *keyname, int count)
         ch->keys = (Key *)realloc(ch->keys, ch->size * sizeof(Key));
         if (ch->keys == NULL)
         {
-            fprintf(stderr, "failed to allocate a new key\n");
+            PRINT_ERROR("failed to allocate a new key\n");
             return RETURN_FAILURE;
         }
     }

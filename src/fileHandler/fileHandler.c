@@ -10,23 +10,35 @@ void resetCount(int *count);
 int promptFiles(int *count)
 {
     int n;
-    printf("enter a number of files to read from: ");
+    printf("enter a %snumber%s of files to read from: ", COLOR_CYAN, COLOR_RESET);
+    printf("%s", COLOR_CYAN);
     scanf("%d", &n);
+    printf("%s", COLOR_RESET);
 
-    printf("enter name of files separated by space or newline\nexample, a.txt b.txt c.txt: \n");
+    if (n <= 0)
+    {
+        char msg[CHAR_LIMIT];
+        sprintf(msg, "%d is invalid input number\n", n);
+        PRINT_ERROR(msg);
+        return RETURN_FAILURE;
+    }
+
+    printf("enter name of files separated by space or newline\nexample, %sa.txt b.txt c.txt%s: \n", COLOR_CYAN, COLOR_RESET);
 
     FILE **files = malloc(sizeof(FILE *) * n);
     for (int i = 0; i < n; i++)
     {
         char filename[FILENAME_LIMIT];
+        printf("%s", COLOR_CYAN);
         scanf("%s", filename);
+        printf("%s", COLOR_RESET);
         files[i] = newFile(filename);
         if (!files[i])
         {
             resetCount(count);
             fclose(files[i]);
             free(files);
-            printf("please try again\n");
+            PRINT_ERROR("please try again\n");
             return RETURN_FAILURE;
         }
 
@@ -47,7 +59,9 @@ FILE *newFile(char *filename)
     FILE *f = fopen(fullpath, "r");
     if (!f)
     {
-        fprintf(stderr, "failed to open a file %s\n", filename);
+        char msg[CHAR_LIMIT];
+        sprintf(msg, "failed to open a file %s\n", filename);
+        PRINT_ERROR(msg);
     }
 
     free(fullpath);

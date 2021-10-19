@@ -5,7 +5,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "../macro.h"
+#include "../macros.h"
 
 // handles all files reading
 // to counting characters inside

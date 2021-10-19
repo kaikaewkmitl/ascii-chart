@@ -5,7 +5,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "../macro.h"
+#include "../macros.h"
 
 typedef struct Chart Chart;
 
