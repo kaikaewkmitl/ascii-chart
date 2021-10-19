@@ -3,9 +3,9 @@
 
 int main(void)
 {
-    int count[N_ASCII] = {0};
+    FileHandler *fh = newFileHandler();
 
-    while (promptAndHandleFiles(count) == RETURN_FAILURE)
+    while (promptAndHandleFiles(fh) == RETURN_FAILURE)
         ;
 
     Chart *ch = newChart();
@@ -14,7 +14,7 @@ int main(void)
         return EXIT_FAILURE;
     }
 
-    if (addKeys(ch, count) == RETURN_FAILURE)
+    if (addKeys(ch, getCharCount(fh)) == RETURN_FAILURE)
     {
         return EXIT_FAILURE;
     }

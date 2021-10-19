@@ -7,9 +7,15 @@
 
 #include "../macros.h"
 
+typedef struct FileHandler FileHandler;
+
+FileHandler *newFileHandler(void);
+
 // handles all file reading
 // to counting characters inside
 // each file
-int promptAndHandleFiles(int *count);
+int promptAndHandleFiles(FileHandler *fh);
+
+int *getCharCount(FileHandler *fh);
 
 #endif

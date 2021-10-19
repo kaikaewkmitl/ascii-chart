@@ -69,28 +69,28 @@ Chart *newChart(void)
     return ch;
 }
 
-int addKeys(Chart *ch, int *count)
+int addKeys(Chart *ch, int *charCount)
 {
     for (int i = 0; i < N_ASCII; i++)
     {
-        if (count[i] > 0)
+        if (charCount[i] > 0)
         {
             switch (i)
             {
             case '\n':
-                if (addKey(ch, "\\n", count[i]) == RETURN_FAILURE)
+                if (addKey(ch, "\\n", charCount[i]) == RETURN_FAILURE)
                 {
                     return RETURN_FAILURE;
                 }
                 break;
             case ' ':
-                if (addKey(ch, "space", count[i]) == RETURN_FAILURE)
+                if (addKey(ch, "space", charCount[i]) == RETURN_FAILURE)
                 {
                     return RETURN_FAILURE;
                 }
                 break;
             case '\t':
-                if (addKey(ch, "\\t", count[i]) == RETURN_FAILURE)
+                if (addKey(ch, "\\t", charCount[i]) == RETURN_FAILURE)
                 {
                     return RETURN_FAILURE;
                 }
@@ -98,7 +98,7 @@ int addKeys(Chart *ch, int *count)
             default:
             {
                 char keyname[2] = {i, 0};
-                if (addKey(ch, keyname, count[i]) == RETURN_FAILURE)
+                if (addKey(ch, keyname, charCount[i]) == RETURN_FAILURE)
                 {
                     return RETURN_FAILURE;
                 }

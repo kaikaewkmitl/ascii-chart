@@ -1,37 +1,62 @@
 #include "fileHandler.h"
 
 #define PREF_PATH "../src/"
-#define FILENAME_LIMIT 25
 
-static bool firsttime = true;
+struct FileHandler
+{
+    int n;
+    int charCount[N_ASCII];
+};
+
+static FileHandler *fh;
+
+static bool firstTime = true;
 
 FILE *newFile(char *filename);
-void countChars(FILE *f, int *count);
-int getN(void);
-int handleNFiles(int *count, int n);
-void resetCount(int *count);
+void countChars(FILE *f, int *charCount);
+void getN(FileHandler *fh);
+int handleNFiles(FileHandler *fh);
+void resetCharCount(FileHandler *fh);
 
-int promptAndHandleFiles(int *count)
+FileHandler *newFileHandler(void)
 {
-    if (firsttime)
+    FileHandler *fh = (FileHandler *)malloc(sizeof(FileHandler));
+    if (fh == NULL)
     {
-        firsttime = false;
+        PRINT_ERROR("failed to allocate a new FileHandler\n");
+        return NULL;
+    }
+
+    resetCharCount(fh);
+    return fh;
+}
+
+int promptAndHandleFiles(FileHandler *fh)
+{
+    if (firstTime)
+    {
+        firstTime = false;
         printf("%s%s", CLEAR_SCREEN, CURSOR_HOME);
     }
 
     printf("Enter a %snumber%s of files to read from: ", COLOR_CYAN, COLOR_RESET);
-    int n = getN();
-    if (n <= 0)
+    getN(fh);
+    if (fh->n <= 0)
     {
         char msg[CHAR_LIMIT];
-        sprintf(msg, "%d is invalid input number\n", n);
+        sprintf(msg, "%d is invalid input number\n", fh->n);
         PRINT_ERROR(msg);
         return RETURN_FAILURE;
     }
 
     printf("\nEnter name of files separated by space or newline;\n");
     printf("example, %sfile1.txt file2.txt file3.txt%s: \n", COLOR_CYAN, COLOR_RESET);
-    return handleNFiles(count, n);
+    return handleNFiles(fh);
+}
+
+int *getCharCount(FileHandler *fh)
+{
+    return fh->charCount;
 }
 
 FILE *newFile(char *filename)
@@ -52,46 +77,46 @@ FILE *newFile(char *filename)
     return f;
 }
 
-void countChars(FILE *f, int *count)
+void countChars(FILE *f, int *charCount)
 {
     for (int c; (c = fgetc(f)) != EOF;)
     {
-        count[c]++;
+        charCount[c]++;
     }
 
     rewind(f);
 }
 
-int getN(void)
+void getN(FileHandler *fh)
 {
     char input[CHAR_LIMIT];
     printf("%s", COLOR_CYAN);
     scanf("%s", input);
     printf("%s", COLOR_RESET);
     int n = atoi(input);
-    return n;
+    fh->n = n;
 }
 
-int handleNFiles(int *count, int n)
+int handleNFiles(FileHandler *fh)
 {
-    FILE **files = malloc(sizeof(FILE *) * n);
-    for (int i = 0; i < n; i++)
+    FILE **files = malloc(sizeof(FILE *) * fh->n);
+    for (int i = 0; i < fh->n; i++)
     {
-        char filename[FILENAME_LIMIT];
+        char filename[CHAR_LIMIT];
         printf("%s", COLOR_CYAN);
         scanf("%s", filename);
         printf("%s", COLOR_RESET);
         files[i] = newFile(filename);
         if (!files[i])
         {
-            resetCount(count);
+            resetCharCount(fh);
             fclose(files[i]);
             free(files);
             PRINT_ERROR("please try again\n");
             return RETURN_FAILURE;
         }
 
-        countChars(files[i], count);
+        countChars(files[i], fh->charCount);
         fclose(files[i]);
     }
 
@@ -99,10 +124,10 @@ int handleNFiles(int *count, int n)
     return RETURN_SUCCESS;
 }
 
-void resetCount(int *count)
+void resetCharCount(FileHandler *fh)
 {
     for (int i = 0; i < N_ASCII; i++)
     {
-        count[i] = 0;
+        fh->charCount[i] = 0;
     }
 }
