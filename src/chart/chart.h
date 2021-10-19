@@ -5,9 +5,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define RETURN_SUCCESS 0
-#define RETURN_FAILURE 1
-#define N_ASCII 128
+#include "../macro.h"
 
 typedef struct Chart Chart;
 

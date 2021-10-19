@@ -5,9 +5,11 @@
 #include <string.h>
 #include <stdlib.h>
 
-// open file for read
-FILE *newFile(char *filename);
+#include "../macro.h"
 
-void countChars(FILE *f, int *count);
+// handles all files reading
+// to counting characters inside
+// each file
+int promptFiles(int *count);
 
 #endif

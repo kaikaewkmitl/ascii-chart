@@ -1,17 +1,11 @@
 #include "chart.h"
 
-#define COLOR_BLACK "\033[30m"
-#define COLOR_RED "\033[31m"
-#define COLOR_GREEN "\033[32m"
-#define COLOR_YELLOW "\033[33m"
-#define COLOR_BLUE "\033[34m"
-#define COLOR_MAGENTA "\033[35m"
-#define COLOR_CYAN "\033[36m"
-#define COLOR_WHITE "\033[37m"
-#define COLOR_RESET "\033[0m"
 #define CHAR_LIMIT 25
 #define N_COLUMNS 3
 #define GROWTH_FACTOR 2
+#define BAR "█"
+#define CURSOR_HOME "\033[H"
+#define CLEAR_SCREEN "\033[1J"
 
 typedef struct Key
 {
@@ -134,6 +128,7 @@ void displayChart(Chart *ch)
     updateColumn2Width(ch);
     updateColumn3Width(ch);
 
+    printf("%s%s", CLEAR_SCREEN, CURSOR_HOME);
     printf("\n %s%s%s\n\n", COLOR_YELLOW, ch->title, COLOR_RESET);
 
     printHeader(ch);
@@ -246,7 +241,7 @@ void printKeys(Chart *ch)
         printStrNTimes(" ", padding);
 
         printf("| %s", COLOR_YELLOW);
-        printStrNTimes("█", ch->keys[i].count);
+        printStrNTimes(BAR, ch->keys[i].count);
         printf("%s\n", COLOR_RESET);
     }
 }
