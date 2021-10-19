@@ -9,8 +9,10 @@ void resetCount(int *count);
 
 int promptFiles(int *count)
 {
+    printf("%s%s", CLEAR_SCREEN, CURSOR_HOME);
+
     int n;
-    printf("enter a %snumber%s of files to read from: ", COLOR_CYAN, COLOR_RESET);
+    printf("Enter a %snumber%s of files to read from: ", COLOR_CYAN, COLOR_RESET);
     printf("%s", COLOR_CYAN);
     scanf("%d", &n);
     printf("%s", COLOR_RESET);
@@ -23,7 +25,8 @@ int promptFiles(int *count)
         return RETURN_FAILURE;
     }
 
-    printf("enter name of files separated by space or newline\nexample, %sa.txt b.txt c.txt%s: \n", COLOR_CYAN, COLOR_RESET);
+    printf("\nEnter name of files separated by space or newline;\n");
+    printf("example, %sfile1.txt file2.txt file3.txt%s: \n", COLOR_CYAN, COLOR_RESET);
 
     FILE **files = malloc(sizeof(FILE *) * n);
     for (int i = 0; i < n; i++)

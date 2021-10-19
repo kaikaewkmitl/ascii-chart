@@ -1,9 +1,9 @@
 #ifndef CHART_H
 #define CHART_H
 
-#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <sys/ioctl.h>
 
 #include "../macros.h"
 
@@ -15,7 +15,7 @@ typedef enum eOrder
     Descending,
 } eOrder;
 
-Chart *newChart(char *title);
+Chart *newChart(void);
 
 int addKeys(Chart *ch, int *count);
 

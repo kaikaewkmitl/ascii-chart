@@ -7,6 +7,7 @@
 #define RETURN_FAILURE 1
 #define N_ASCII 128
 #define CHAR_LIMIT 50
+
 #define COLOR_BLACK "\033[30m"
 #define COLOR_RED "\033[31m"
 #define COLOR_GREEN "\033[32m"
@@ -17,5 +18,8 @@
 #define COLOR_WHITE "\033[37m"
 #define COLOR_RESET "\033[0m"
 #define PRINT_ERROR(msg) fprintf(stderr, "%s%s%s", COLOR_RED, msg, COLOR_RESET);
+
+#define CURSOR_HOME "\033[H"
+#define CLEAR_SCREEN "\033[1J"
 
 #endif

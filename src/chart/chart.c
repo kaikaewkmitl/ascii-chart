@@ -3,8 +3,7 @@
 #define N_COLUMNS 3
 #define GROWTH_FACTOR 2
 #define BAR "█"
-#define CURSOR_HOME "\033[H"
-#define CLEAR_SCREEN "\033[1J"
+#define STDOUT_FILENO 1
 
 typedef struct Key
 {
@@ -16,7 +15,6 @@ typedef struct Key
 
 struct Chart
 {
-    char title[CHAR_LIMIT];
     int columnWidth[N_COLUMNS];
 
     // size as in keys max capacity,
@@ -25,6 +23,8 @@ struct Chart
     int size;
     int len;
 };
+
+static int screenWidth, screenHeight;
 
 static char *COLUMNS[N_COLUMNS] = {"Keys", "Count", "Chart"};
 
@@ -40,7 +40,7 @@ void printStrNTimes(char *str, int n);
 int cmpAscending(const void *a, const void *b);
 int cmpDescending(const void *a, const void *b);
 
-Chart *newChart(char *title)
+Chart *newChart(void)
 {
     Chart *ch = (Chart *)malloc(sizeof(Chart));
     if (ch == NULL)
@@ -57,13 +57,15 @@ Chart *newChart(char *title)
         return NULL;
     }
 
-    strcpy(ch->title, title);
-
     for (int i = 0; i < N_COLUMNS; i++)
     {
         ch->columnWidth[i] = strlen(COLUMNS[i]);
     }
 
+    struct winsize ws;
+    ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws);
+    screenWidth = ws.ws_col;
+    screenHeight = ws.ws_row;
     return ch;
 }
 
@@ -128,7 +130,8 @@ void displayChart(Chart *ch)
     updateColumn3Width(ch);
 
     printf("%s%s", CLEAR_SCREEN, CURSOR_HOME);
-    printf("\n %s%s%s\n\n", COLOR_YELLOW, ch->title, COLOR_RESET);
+
+    printf("\n %sGenerated successfully%s\n\n", COLOR_GREEN, COLOR_RESET);
 
     printHeader(ch);
     printKeys(ch);

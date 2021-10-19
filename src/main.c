@@ -1,5 +1,5 @@
-#include "chart/chart.h"
 #include "fileHandler/fileHandler.h"
+#include "chart/chart.h"
 
 int main(void)
 {
@@ -8,7 +8,7 @@ int main(void)
     while (promptFiles(count) == RETURN_FAILURE)
         ;
 
-    Chart *ch = newChart("MY CHART");
+    Chart *ch = newChart();
     if (!ch)
     {
         return EXIT_FAILURE;

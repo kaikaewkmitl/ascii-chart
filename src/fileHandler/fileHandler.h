@@ -1,13 +1,12 @@
 #ifndef FILEHANDLER_H
 #define FILEHANDLER_H
 
-#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
 #include "../macros.h"
 
-// handles all files reading
+// handles all file reading
 // to counting characters inside
 // each file
 int promptFiles(int *count);
