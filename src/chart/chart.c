@@ -234,28 +234,54 @@ void printKeys(Chart *ch)
 {
     for (int i = 0; i < ch->len; i++)
     {
+        // - 7 comes from space paddings and
+        // column dividers of the 3 columns below
+        int limit = screenWidth - 7;
+
+        // 2 paddings
         printf(" %s%s%s ", COLOR_YELLOW, ch->keys[i].keyname, COLOR_RESET);
-        int padding = ch->columnWidth[0] - strlen(ch->keys[i].keyname);
+        int n = strlen(ch->keys[i].keyname);
+        int padding = ch->columnWidth[0] - n;
+        limit -= padding + n;
         printStrNTimes(" ", padding);
 
+        // 2 paddings + 1 column divider
         printf("| %s%d%s ", COLOR_YELLOW, ch->keys[i].count, COLOR_RESET);
-        padding = ch->columnWidth[1] - ch->keys[i].countDigit;
+        n = ch->keys[i].countDigit;
+        padding = ch->columnWidth[1] - n;
+        limit -= padding + n;
         printStrNTimes(" ", padding);
 
+        n = ch->keys[i].count;
+        if (limit < n)
+        {
+            n = limit;
+        }
+
+        // 1 padding + 1 column divider
         printf("| %s", COLOR_YELLOW);
-        printStrNTimes(BAR, ch->keys[i].count);
+        printStrNTimes(BAR, n);
         printf("%s\n", COLOR_RESET);
     }
 }
 
 void printNewRow(Chart *ch)
 {
+    int limit = screenWidth;
     for (int i = 0; i < N_COLUMNS; i++)
     {
         // + 2 comes from space padding on both sides
-        printStrNTimes("-", ch->columnWidth[i] + 2);
+        int n = ch->columnWidth[i] + 2;
+        limit -= n;
+        if (limit < 0)
+        {
+            n += limit;
+        }
+
+        printStrNTimes("-", n);
         if (i != N_COLUMNS - 1)
         {
+            limit--;
             printf("+");
         }
     }
