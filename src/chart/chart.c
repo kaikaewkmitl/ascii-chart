@@ -252,6 +252,7 @@ void printNewRow(Chart *ch)
 {
     for (int i = 0; i < N_COLUMNS; i++)
     {
+        // + 2 comes from space padding on both sides
         printStrNTimes("-", ch->columnWidth[i] + 2);
         if (i != N_COLUMNS - 1)
         {

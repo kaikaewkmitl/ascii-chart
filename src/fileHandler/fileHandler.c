@@ -3,20 +3,24 @@
 #define PREF_PATH "../src/"
 #define FILENAME_LIMIT 25
 
+static bool firsttime = true;
+
 FILE *newFile(char *filename);
 void countChars(FILE *f, int *count);
+int getN(void);
+int handleNFiles(int *count, int n);
 void resetCount(int *count);
 
-int promptFiles(int *count)
+int promptAndHandleFiles(int *count)
 {
-    printf("%s%s", CLEAR_SCREEN, CURSOR_HOME);
+    if (firsttime)
+    {
+        firsttime = false;
+        printf("%s%s", CLEAR_SCREEN, CURSOR_HOME);
+    }
 
-    int n;
     printf("Enter a %snumber%s of files to read from: ", COLOR_CYAN, COLOR_RESET);
-    printf("%s", COLOR_CYAN);
-    scanf("%d", &n);
-    printf("%s", COLOR_RESET);
-
+    int n = getN();
     if (n <= 0)
     {
         char msg[CHAR_LIMIT];
@@ -27,30 +31,7 @@ int promptFiles(int *count)
 
     printf("\nEnter name of files separated by space or newline;\n");
     printf("example, %sfile1.txt file2.txt file3.txt%s: \n", COLOR_CYAN, COLOR_RESET);
-
-    FILE **files = malloc(sizeof(FILE *) * n);
-    for (int i = 0; i < n; i++)
-    {
-        char filename[FILENAME_LIMIT];
-        printf("%s", COLOR_CYAN);
-        scanf("%s", filename);
-        printf("%s", COLOR_RESET);
-        files[i] = newFile(filename);
-        if (!files[i])
-        {
-            resetCount(count);
-            fclose(files[i]);
-            free(files);
-            PRINT_ERROR("please try again\n");
-            return RETURN_FAILURE;
-        }
-
-        countChars(files[i], count);
-        fclose(files[i]);
-    }
-
-    free(files);
-    return RETURN_SUCCESS;
+    return handleNFiles(count, n);
 }
 
 FILE *newFile(char *filename)
@@ -79,6 +60,43 @@ void countChars(FILE *f, int *count)
     }
 
     rewind(f);
+}
+
+int getN(void)
+{
+    char input[CHAR_LIMIT];
+    printf("%s", COLOR_CYAN);
+    scanf("%s", input);
+    printf("%s", COLOR_RESET);
+    int n = atoi(input);
+    return n;
+}
+
+int handleNFiles(int *count, int n)
+{
+    FILE **files = malloc(sizeof(FILE *) * n);
+    for (int i = 0; i < n; i++)
+    {
+        char filename[FILENAME_LIMIT];
+        printf("%s", COLOR_CYAN);
+        scanf("%s", filename);
+        printf("%s", COLOR_RESET);
+        files[i] = newFile(filename);
+        if (!files[i])
+        {
+            resetCount(count);
+            fclose(files[i]);
+            free(files);
+            PRINT_ERROR("please try again\n");
+            return RETURN_FAILURE;
+        }
+
+        countChars(files[i], count);
+        fclose(files[i]);
+    }
+
+    free(files);
+    return RETURN_SUCCESS;
 }
 
 void resetCount(int *count)

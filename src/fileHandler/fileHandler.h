@@ -3,12 +3,13 @@
 
 #include <string.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 #include "../macros.h"
 
 // handles all file reading
 // to counting characters inside
 // each file
-int promptFiles(int *count);
+int promptAndHandleFiles(int *count);
 
 #endif

@@ -5,7 +5,7 @@ int main(void)
 {
     int count[N_ASCII] = {0};
 
-    while (promptFiles(count) == RETURN_FAILURE)
+    while (promptAndHandleFiles(count) == RETURN_FAILURE)
         ;
 
     Chart *ch = newChart();
