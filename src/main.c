@@ -23,7 +23,7 @@ int main(void)
         return EXIT_FAILURE;
     }
 
-    sortChart(ch, Descending);
+    sortChart(ch, SORT_DESC);
     displayChart(ch);
     deleteChart(ch);
     return EXIT_SUCCESS;

@@ -114,14 +114,14 @@ int addKeys(Chart *ch, int *charCount)
     return RETURN_SUCCESS;
 }
 
-void sortChart(Chart *ch, eOrder order)
+void sortChart(Chart *ch, int order)
 {
     switch (order)
     {
-    case Ascending:
+    case SORT_ASC:
         qsort(ch->keys, ch->len, sizeof(Key), cmpAscending);
         break;
-    case Descending:
+    case SORT_DESC:
         qsort(ch->keys, ch->len, sizeof(Key), cmpDescending);
         break;
     }
