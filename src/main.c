@@ -4,12 +4,16 @@
 int main(void)
 {
     FileHandler *fh = newFileHandler();
+    if (fh == NULL)
+    {
+        return EXIT_FAILURE;
+    }
 
     while (promptAndHandleFiles(fh) == RETURN_FAILURE)
         ;
 
     Chart *ch = newChart();
-    if (!ch)
+    if (ch == NULL)
     {
         return EXIT_FAILURE;
     }

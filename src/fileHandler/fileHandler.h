@@ -11,9 +11,8 @@ typedef struct FileHandler FileHandler;
 
 FileHandler *newFileHandler(void);
 
-// handles all file reading
-// to counting characters inside
-// each file
+// handles all files reading and counting
+// characters inside each file
 int promptAndHandleFiles(FileHandler *fh);
 
 int *getCharCount(FileHandler *fh);

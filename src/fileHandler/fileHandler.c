@@ -4,8 +4,11 @@
 
 struct FileHandler
 {
-    int n;
     int charCount[N_ASCII];
+
+    // number of files
+    // to read from
+    int n;
 };
 
 static FileHandler *fh;
@@ -15,7 +18,7 @@ static bool firstTime = true;
 FILE *newFile(char *filename);
 void countChars(FILE *f, int *charCount);
 void getN(FileHandler *fh);
-int handleNFiles(FileHandler *fh);
+int handleFiles(FileHandler *fh);
 void resetCharCount(FileHandler *fh);
 
 FileHandler *newFileHandler(void)
@@ -51,7 +54,7 @@ int promptAndHandleFiles(FileHandler *fh)
 
     printf("\nEnter name of files separated by space or newline;\n");
     printf("example, %sfile1.txt file2.txt file3.txt%s: \n", COLOR_CYAN, COLOR_RESET);
-    return handleNFiles(fh);
+    return handleFiles(fh);
 }
 
 int *getCharCount(FileHandler *fh)
@@ -62,6 +65,12 @@ int *getCharCount(FileHandler *fh)
 FILE *newFile(char *filename)
 {
     char *fullpath = (char *)malloc(strlen(PREF_PATH) + strlen(filename) + 1);
+    if (fullpath == NULL)
+    {
+        PRINT_ERROR("failed to allocate a file path\n");
+        return NULL;
+    }
+
     strcpy(fullpath, PREF_PATH);
     strcat(fullpath, filename);
 
@@ -97,9 +106,15 @@ void getN(FileHandler *fh)
     fh->n = n;
 }
 
-int handleNFiles(FileHandler *fh)
+int handleFiles(FileHandler *fh)
 {
-    FILE **files = malloc(sizeof(FILE *) * fh->n);
+    FILE **files = (FILE **)malloc(sizeof(FILE *) * fh->n);
+    if (files == NULL)
+    {
+        PRINT_ERROR("failed to allocate a space for files\n");
+        return RETURN_FAILURE;
+    }
+
     for (int i = 0; i < fh->n; i++)
     {
         char filename[CHAR_LIMIT];
@@ -107,10 +122,9 @@ int handleNFiles(FileHandler *fh)
         scanf("%s", filename);
         printf("%s", COLOR_RESET);
         files[i] = newFile(filename);
-        if (!files[i])
+        if (files[i] == NULL)
         {
             resetCharCount(fh);
-            fclose(files[i]);
             free(files);
             PRINT_ERROR("please try again\n");
             return RETURN_FAILURE;
