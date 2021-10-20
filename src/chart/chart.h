@@ -3,7 +3,6 @@
 
 #include <string.h>
 #include <stdlib.h>
-#include <sys/ioctl.h>
 
 #include "../macros.h"
 

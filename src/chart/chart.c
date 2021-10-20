@@ -24,7 +24,7 @@ struct Chart
     int len;
 };
 
-static int screenWidth, screenHeight;
+static int screenWidth;
 
 static char *COLUMNS[N_COLUMNS] = {"Keys", "Count", "Chart"};
 
@@ -62,10 +62,14 @@ Chart *newChart(void)
         ch->columnWidth[i] = strlen(COLUMNS[i]);
     }
 
-    struct winsize ws;
-    ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws);
-    screenWidth = ws.ws_col;
-    screenHeight = ws.ws_row;
+    char *width = getenv("COLUMNS");
+    if (width == NULL)
+    {
+        PRINT_ERROR("COLUMNS env variable is not defined\n");
+        return NULL;
+    }
+
+    screenWidth = atoi(width);
     return ch;
 }
 
