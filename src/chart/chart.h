@@ -6,18 +6,21 @@
 
 #include "../macros.h"
 
-#define SORT_ASC 0
-#define SORT_DESC 1
-
 typedef struct Chart Chart;
+
+typedef enum eOrder
+{
+    Ascending,
+    Descending,
+} eOrder;
 
 Chart *newChart(void);
 
-int addKeys(Chart *ch, int *charCount);
+int addKeys(Chart *ch, int *count);
 
 // sorts by count in ascending
 // or descending order
-void sortChart(Chart *ch, int order);
+void sortChart(Chart *ch, eOrder order);
 
 void displayChart(Chart *ch);
 
