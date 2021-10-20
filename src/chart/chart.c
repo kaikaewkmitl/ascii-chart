@@ -135,7 +135,7 @@ void displayChart(Chart *ch)
 
     printf("%s%s", CLEAR_SCREEN, CURSOR_HOME);
 
-    printf("\n %sGenerated successfully%s\n\n", COLOR_GREEN, COLOR_RESET);
+    printf("\n %s%sGenerated successfully%s\n\n", COLOR_GREEN, BOLD_TEXT, COLOR_RESET);
 
     printHeader(ch);
     printKeys(ch);
@@ -215,15 +215,15 @@ int addKey(Chart *ch, char *keyname, int count)
 
 void printHeader(Chart *ch)
 {
-    printf(" %s%s%s ", COLOR_YELLOW, COLUMNS[0], COLOR_RESET);
+    printf(" %s%s%s%s ", COLOR_YELLOW, BOLD_TEXT, COLUMNS[0], COLOR_RESET);
     int padding = ch->columnWidth[0] - strlen(COLUMNS[0]);
     printStrNTimes(" ", padding);
 
-    printf("| %s%s%s ", COLOR_YELLOW, COLUMNS[1], COLOR_RESET);
+    printf("| %s%s%s%s ", COLOR_YELLOW, BOLD_TEXT, COLUMNS[1], COLOR_RESET);
     padding = ch->columnWidth[1] - strlen(COLUMNS[1]);
     printStrNTimes(" ", padding);
 
-    printf("| %s%s%s \n", COLOR_YELLOW, COLUMNS[2], COLOR_RESET);
+    printf("| %s%s%s%s \n", COLOR_YELLOW, BOLD_TEXT, COLUMNS[2], COLOR_RESET);
 
     printNewRow(ch);
 }

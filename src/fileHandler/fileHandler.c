@@ -42,7 +42,7 @@ int promptAndHandleFiles(FileHandler *fh)
         printf("%s%s", CLEAR_SCREEN, CURSOR_HOME);
     }
 
-    printf("Enter a %snumber%s of files to read from: ", COLOR_CYAN, COLOR_RESET);
+    printf("Enter a %s%snumber%s of files to read from: ", COLOR_CYAN, BOLD_TEXT, COLOR_RESET);
     getN(fh);
     if (fh->n <= 0)
     {
@@ -53,7 +53,7 @@ int promptAndHandleFiles(FileHandler *fh)
     }
 
     printf("\nEnter name of files separated by space or newline;\n");
-    printf("example, %sfile1.txt file2.txt file3.txt%s: \n", COLOR_CYAN, COLOR_RESET);
+    printf("example, %s%sfile1.txt file2.txt file3.txt%s: \n", COLOR_CYAN, BOLD_TEXT, COLOR_RESET);
     return handleFiles(fh);
 }
 
