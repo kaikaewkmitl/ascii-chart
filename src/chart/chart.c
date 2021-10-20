@@ -219,11 +219,11 @@ void printHeader(Chart *ch)
     int padding = ch->columnWidth[0] - strlen(COLUMNS[0]);
     printStrNTimes(" ", padding);
 
-    printf("| %s%s%s%s ", COLOR_YELLOW, BOLD_TEXT, COLUMNS[1], COLOR_RESET);
+    printf("| %s%s%s%s ", COLOR_BLUE, BOLD_TEXT, COLUMNS[1], COLOR_RESET);
     padding = ch->columnWidth[1] - strlen(COLUMNS[1]);
     printStrNTimes(" ", padding);
 
-    printf("| %s%s%s%s \n", COLOR_YELLOW, BOLD_TEXT, COLUMNS[2], COLOR_RESET);
+    printf("| %s%s%s%s \n", COLOR_WHITE, BOLD_TEXT, COLUMNS[2], COLOR_RESET);
 
     printNewRow(ch);
 }
@@ -250,7 +250,7 @@ void printKeys(Chart *ch)
         printStrNTimes(" ", padding);
 
         // 2 paddings + 1 column divider
-        printf("| %s%d%s ", COLOR_YELLOW, ch->keys[i].count, COLOR_RESET);
+        printf("| %s%d%s ", COLOR_BLUE, ch->keys[i].count, COLOR_RESET);
         n = ch->keys[i].countDigit;
         padding = ch->columnWidth[1] - n;
         limit -= padding + n;
@@ -263,7 +263,7 @@ void printKeys(Chart *ch)
         }
 
         // 1 padding + 1 column divider
-        printf("| %s", COLOR_YELLOW);
+        printf("| %s%s", COLOR_BLACK, BOLD_TEXT);
         printStrNTimes(BAR, n);
         printf("%s\n", COLOR_RESET);
     }
