@@ -16,7 +16,7 @@ typedef enum eOrder
 
 Chart *newChart(void);
 
-int addKeys(Chart *ch, int *count);
+int addKeys(Chart *ch, int charCount[]);
 
 // sorts by count in ascending
 // or descending order

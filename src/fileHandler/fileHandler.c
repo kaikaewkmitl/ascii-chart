@@ -13,11 +13,9 @@ struct FileHandler
 
 static FileHandler *fh;
 
-FILE *newFile(char *filename);
-void countChars(FILE *f, int *charCount);
 void getN(FileHandler *fh);
 int handleFiles(FileHandler *fh);
-void resetCharCount(int *charCount);
+void resetCharCount(int charCount[]);
 
 FileHandler *newFileHandler(void)
 {
@@ -32,29 +30,7 @@ FileHandler *newFileHandler(void)
     return fh;
 }
 
-int promptAndHandleFiles(FileHandler *fh)
-{
-    printf("Enter a %s%snumber%s of files to read from: ", COLOR_CYAN, BOLD_TEXT, COLOR_RESET);
-    getN(fh);
-    if (fh->n <= 0)
-    {
-        char msg[CHAR_LIMIT];
-        sprintf(msg, "%d is invalid input number\n", fh->n);
-        PRINT_ERROR(msg);
-        return RETURN_FAILURE;
-    }
-
-    printf("\nEnter name of files separated by space or newline;\n");
-    printf("example, %s%sfile1.txt file2.txt file3.txt%s: \n", COLOR_CYAN, BOLD_TEXT, COLOR_RESET);
-    return handleFiles(fh);
-}
-
-int *getCharCount(FileHandler *fh)
-{
-    return fh->charCount;
-}
-
-FILE *newFile(char *filename)
+FILE *newFile(char filename[])
 {
     char *fullpath = (char *)malloc(strlen(ROOT_PATH) + strlen(filename) + 1);
     if (fullpath == NULL)
@@ -78,7 +54,24 @@ FILE *newFile(char *filename)
     return f;
 }
 
-void countChars(FILE *f, int *charCount)
+int promptAndHandleFiles(FileHandler *fh)
+{
+    printf("Enter a %s%snumber%s of files to read from: ", COLOR_CYAN, BOLD_TEXT, COLOR_RESET);
+    getN(fh);
+    if (fh->n <= 0)
+    {
+        char msg[CHAR_LIMIT];
+        sprintf(msg, "%d is invalid input number\n", fh->n);
+        PRINT_ERROR(msg);
+        return RETURN_FAILURE;
+    }
+
+    printf("\nEnter name of files separated by space or newline;\n");
+    printf("example, %s%sfile1.txt file2.txt file3.txt%s: \n", COLOR_CYAN, BOLD_TEXT, COLOR_RESET);
+    return handleFiles(fh);
+}
+
+void countChars(FILE *f, int charCount[])
 {
     for (int c; (c = fgetc(f)) != EOF;)
     {
@@ -86,6 +79,11 @@ void countChars(FILE *f, int *charCount)
     }
 
     rewind(f);
+}
+
+int *getCharCount(FileHandler *fh)
+{
+    return fh->charCount;
 }
 
 void getN(FileHandler *fh)
@@ -121,7 +119,7 @@ int handleFiles(FileHandler *fh)
     return RETURN_SUCCESS;
 }
 
-void resetCharCount(int *charCount)
+void resetCharCount(int charCount[])
 {
     for (int i = 0; i < N_ASCII; i++)
     {

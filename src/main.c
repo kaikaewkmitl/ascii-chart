@@ -1,32 +1,22 @@
+#include "cmd/cmd.h"
 #include "fileHandler/fileHandler.h"
 #include "chart/chart.h"
 
-int main(void)
+int main(int argc, char **argv)
 {
     printf("%s%s", CLEAR_SCREEN, CURSOR_HOME);
 
-    FileHandler *fh = newFileHandler();
-    if (fh == NULL)
+    if (parseFlags(argc) == DEFAULT_MODE)
     {
-        return EXIT_FAILURE;
+        if (runDefaultMode() == RETURN_FAILURE)
+        {
+            return EXIT_FAILURE;
+        }
+    }
+    else
+    {
+        runWithFilesMode();
     }
 
-    while (promptAndHandleFiles(fh) == RETURN_FAILURE)
-        ;
-
-    Chart *ch = newChart();
-    if (ch == NULL)
-    {
-        return EXIT_FAILURE;
-    }
-
-    if (addKeys(ch, getCharCount(fh)) == RETURN_FAILURE)
-    {
-        return EXIT_FAILURE;
-    }
-
-    sortChart(ch, Descending);
-    displayChart(ch);
-    deleteChart(ch);
     return EXIT_SUCCESS;
 }

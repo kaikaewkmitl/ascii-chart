@@ -31,12 +31,12 @@ static char *COLUMNS[N_COLUMNS] = {"Keys", "Count", "Chart"};
 void updateColumn1Width(Chart *ch);
 void updateColumn2Width(Chart *ch);
 void updateColumn3Width(Chart *ch);
-int addKey(Chart *ch, char *keyname, int count);
+int addKey(Chart *ch, char keyname[], int count);
 void printHeader(Chart *ch);
 void printFooter(Chart *ch);
 void printKeys(Chart *ch);
 void printNewRow(Chart *ch);
-void printStrNTimes(char *str, int n);
+void printStrNTimes(char str[], int n);
 int cmpAscending(const void *a, const void *b);
 int cmpDescending(const void *a, const void *b);
 
@@ -73,7 +73,7 @@ Chart *newChart(void)
     return ch;
 }
 
-int addKeys(Chart *ch, int *charCount)
+int addKeys(Chart *ch, int charCount[])
 {
     for (int i = 0; i < N_ASCII; i++)
     {
@@ -185,7 +185,7 @@ void updateColumn3Width(Chart *ch)
     }
 }
 
-int addKey(Chart *ch, char *keyname, int count)
+int addKey(Chart *ch, char keyname[], int count)
 {
     if (ch->len == ch->size)
     {
@@ -293,7 +293,7 @@ void printNewRow(Chart *ch)
     printf("\n");
 }
 
-void printStrNTimes(char *str, int n)
+void printStrNTimes(char str[], int n)
 {
     for (int i = 0; i < n; i++)
     {
