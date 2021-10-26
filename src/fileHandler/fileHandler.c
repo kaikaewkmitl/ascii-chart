@@ -19,7 +19,7 @@ FILE *newFile(char *filename);
 void countChars(FILE *f, int *charCount);
 void getN(FileHandler *fh);
 int handleFiles(FileHandler *fh);
-void resetCharCount(FileHandler *fh);
+void resetCharCount(int *charCount);
 
 FileHandler *newFileHandler(void)
 {
@@ -108,40 +108,31 @@ void getN(FileHandler *fh)
 
 int handleFiles(FileHandler *fh)
 {
-    FILE **files = (FILE **)malloc(sizeof(FILE *) * fh->n);
-    if (files == NULL)
-    {
-        PRINT_ERROR("failed to allocate a space for files\n");
-        return RETURN_FAILURE;
-    }
-
     for (int i = 0; i < fh->n; i++)
     {
         char filename[CHAR_LIMIT];
         printf("%s", COLOR_CYAN);
         scanf("%s", filename);
         printf("%s", COLOR_RESET);
-        files[i] = newFile(filename);
-        if (files[i] == NULL)
+        FILE *f = newFile(filename);
+        if (f == NULL)
         {
-            resetCharCount(fh);
-            free(files);
+            resetCharCount(fh->charCount);
             PRINT_ERROR("please try again\n");
             return RETURN_FAILURE;
         }
 
-        countChars(files[i], fh->charCount);
-        fclose(files[i]);
+        countChars(f, fh->charCount);
+        fclose(f);
     }
 
-    free(files);
     return RETURN_SUCCESS;
 }
 
-void resetCharCount(FileHandler *fh)
+void resetCharCount(int *charCount)
 {
     for (int i = 0; i < N_ASCII; i++)
     {
-        fh->charCount[i] = 0;
+        charCount[i] = 0;
     }
 }
