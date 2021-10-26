@@ -1,6 +1,6 @@
 #include "fileHandler.h"
 
-#define PREF_PATH "../src/"
+#define ROOT_PATH "../"
 
 struct FileHandler
 {
@@ -12,8 +12,6 @@ struct FileHandler
 };
 
 static FileHandler *fh;
-
-static bool firstTime = true;
 
 FILE *newFile(char *filename);
 void countChars(FILE *f, int *charCount);
@@ -30,18 +28,12 @@ FileHandler *newFileHandler(void)
         return NULL;
     }
 
-    resetCharCount(fh);
+    resetCharCount(fh->charCount);
     return fh;
 }
 
 int promptAndHandleFiles(FileHandler *fh)
 {
-    if (firstTime)
-    {
-        firstTime = false;
-        printf("%s%s", CLEAR_SCREEN, CURSOR_HOME);
-    }
-
     printf("Enter a %s%snumber%s of files to read from: ", COLOR_CYAN, BOLD_TEXT, COLOR_RESET);
     getN(fh);
     if (fh->n <= 0)
@@ -64,14 +56,14 @@ int *getCharCount(FileHandler *fh)
 
 FILE *newFile(char *filename)
 {
-    char *fullpath = (char *)malloc(strlen(PREF_PATH) + strlen(filename) + 1);
+    char *fullpath = (char *)malloc(strlen(ROOT_PATH) + strlen(filename) + 1);
     if (fullpath == NULL)
     {
         PRINT_ERROR("failed to allocate a file path\n");
         return NULL;
     }
 
-    strcpy(fullpath, PREF_PATH);
+    strcpy(fullpath, ROOT_PATH);
     strcat(fullpath, filename);
 
     FILE *f = fopen(fullpath, "r");

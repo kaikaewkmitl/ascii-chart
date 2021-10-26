@@ -3,6 +3,8 @@
 
 int main(void)
 {
+    printf("%s%s", CLEAR_SCREEN, CURSOR_HOME);
+
     FileHandler *fh = newFileHandler();
     if (fh == NULL)
     {
