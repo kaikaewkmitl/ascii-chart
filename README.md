@@ -18,6 +18,14 @@ cmake .. && cmake --build .
 cd ..
 ```
 
+or with Makefile
+
+```
+git clone https://github.com/kaikaewkmitl/ascii-chart.git
+cd ascii-chart
+make build
+```
+
 the executable is called 'ascii-chart'
 
 ## Run
