@@ -43,7 +43,7 @@ FILE *newFile(char filename[])
     strcat(fullpath, filename);
 
     FILE *f = fopen(fullpath, "r");
-    if (!f)
+    if (f == NULL)
     {
         char msg[CHAR_LIMIT];
         sprintf(msg, "failed to open a file %s\n", filename);

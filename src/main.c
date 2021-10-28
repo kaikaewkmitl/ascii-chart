@@ -5,18 +5,50 @@
 int main(int argc, char **argv)
 {
     printf("%s%s", CLEAR_SCREEN, CURSOR_HOME);
+    int charCount[N_ASCII] = {0};
 
-    if (parseFlags(argc) == DEFAULT_MODE)
+    eMode mode = parseFlags(argc, argv);
+    switch (mode)
     {
-        if (runDefaultMode() == RETURN_FAILURE)
+    case DefaultMode:
+        if (runDefaultMode(charCount) == RETURN_FAILURE)
         {
             return EXIT_FAILURE;
         }
+
+        break;
+
+    case WithFilesMode:
+        if (runWithFilesMode(argc, argv, charCount) == RETURN_FAILURE)
+        {
+            return EXIT_FAILURE;
+        }
+
+        break;
+
+    case HelpMode:
+        printf("help\n");
+        return EXIT_SUCCESS;
+
+    case Unknown:
+        PRINT_ERROR("unknown flag\n");
+        return EXIT_SUCCESS;
     }
-    else
+
+    Chart *ch = newChart();
+    if (ch == NULL)
     {
-        runWithFilesMode();
+        return EXIT_FAILURE;
     }
+
+    if (addKeys(ch, charCount) == RETURN_FAILURE)
+    {
+        return EXIT_FAILURE;
+    }
+
+    sortChart(ch, Descending);
+    displayChart(ch);
+    deleteChart(ch);
 
     return EXIT_SUCCESS;
 }

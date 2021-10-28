@@ -5,13 +5,18 @@
 #include "../fileHandler/fileHandler.h"
 #include "../chart/chart.h"
 
-#define DEFAULT_MODE 0
-#define WITH_FILES_MODE 1
+typedef enum eMode
+{
+    DefaultMode,
+    WithFilesMode,
+    HelpMode,
+    Unknown,
+} eMode;
 
-int parseFlags(int argc);
+eMode parseFlags(int argc, char **argv);
 
-int runDefaultMode(void);
+int runDefaultMode(int charCount[]);
 
-int runWithFilesMode(void);
+int runWithFilesMode(int argc, char **argv, int charCount[]);
 
 #endif

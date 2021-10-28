@@ -1,11 +1,29 @@
 #include "cmd.h"
 
-int parseFlags(int argc)
+#define F_FLAG "-f"
+#define H_FLAG "-h"
+
+eMode parseFlags(int argc, char **argv)
 {
-    return argc == 1 ? DEFAULT_MODE : WITH_FILES_MODE;
+    if (argc == 1)
+    {
+        return DefaultMode;
+    }
+
+    if (strcmp(F_FLAG, argv[1]) == 0)
+    {
+        return WithFilesMode;
+    }
+
+    if (strcmp(H_FLAG, argv[1]) == 0)
+    {
+        return HelpMode;
+    }
+
+    return Unknown;
 }
 
-int runDefaultMode(void)
+int runDefaultMode(int charCount[])
 {
     FileHandler *fh = newFileHandler();
     if (fh == NULL)
@@ -16,24 +34,23 @@ int runDefaultMode(void)
     while (promptAndHandleFiles(fh) == RETURN_FAILURE)
         ;
 
-    Chart *ch = newChart();
-    if (ch == NULL)
-    {
-        return RETURN_FAILURE;
-    }
-
-    if (addKeys(ch, getCharCount(fh)) == RETURN_FAILURE)
-    {
-        return RETURN_FAILURE;
-    }
-
-    sortChart(ch, Descending);
-    displayChart(ch);
-    deleteChart(ch);
+    memcpy(charCount, getCharCount(fh), sizeof(int) * N_ASCII);
     return RETURN_SUCCESS;
 }
 
-int runWithFilesMode(void)
+int runWithFilesMode(int argc, char **argv, int charCount[])
 {
+    for (int i = 2; i < argc; i++)
+    {
+        FILE *f = newFile(argv[i]);
+        if (f == NULL)
+        {
+            return RETURN_FAILURE;
+        }
+
+        countChars(f, charCount);
+        fclose(f);
+    }
+
     return RETURN_SUCCESS;
 }
