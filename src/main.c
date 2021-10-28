@@ -1,11 +1,8 @@
 #include "cmd/cmd.h"
-#include "fileHandler/fileHandler.h"
 #include "chart/chart.h"
 
 int main(int argc, char **argv)
 {
-    printf("%s%s", CLEAR_SCREEN, CURSOR_HOME);
-    printf("%s%sASCII Chart Generator%s\n\n", COLOR_GREEN, BOLD_TEXT, COLOR_RESET);
     int charCount[N_ASCII] = {0};
 
     eMode mode = parseFlags(argc, argv);
@@ -28,13 +25,16 @@ int main(int argc, char **argv)
         break;
 
     case HelpMode:
-        printf("help\n");
+        runHelpMode(argv);
         return EXIT_SUCCESS;
 
-    case Unknown:
-        PRINT_ERROR("unknown flag\n");
+    case UnknownCmd:
+        runUnknownCmd(argc, argv);
         return EXIT_SUCCESS;
     }
+
+    printf("%s%s", CLEAR_SCREEN, CURSOR_HOME);
+    printf("%s%sASCII Chart Generator%s\n\n", COLOR_GREEN, BOLD_TEXT, COLOR_RESET);
 
     Chart *ch = newChart();
     if (ch == NULL)

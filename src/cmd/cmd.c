@@ -20,7 +20,7 @@ eMode parseFlags(int argc, char **argv)
         return HelpMode;
     }
 
-    return Unknown;
+    return UnknownCmd;
 }
 
 int runDefaultMode(int charCount[])
@@ -59,4 +59,28 @@ int runWithFilesMode(int argc, char **argv, int charCount[])
     }
 
     return RETURN_SUCCESS;
+}
+
+void runHelpMode(char **argv)
+{
+    printf("ASCII Chart Generator\n");
+    printf("KMITL's C-programming project\n\n");
+    printf("Usage: %s [%s files...]\n", argv[0], F_FLAG);
+}
+
+void runUnknownCmd(int argc, char **argv)
+{
+    char msg[CHAR_LIMIT] = "";
+    for (int i = 0; i < argc; i++)
+    {
+        strcat(msg, argv[i]);
+        if (i < argc - 1)
+        {
+            strcat(msg, " ");
+        }
+    }
+
+    strcat(msg, ": unknown command\n");
+    PRINT_ERROR(msg);
+    printf("Try '%s %s' for help\n", argv[0], H_FLAG);
 }
