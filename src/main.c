@@ -5,6 +5,7 @@
 int main(int argc, char **argv)
 {
     printf("%s%s", CLEAR_SCREEN, CURSOR_HOME);
+    printf("%s%sASCII Chart Generator%s\n\n", COLOR_GREEN, BOLD_TEXT, COLOR_RESET);
     int charCount[N_ASCII] = {0};
 
     eMode mode = parseFlags(argc, argv);

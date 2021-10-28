@@ -1,7 +1,5 @@
 #include "fileHandler.h"
 
-#define ROOT_PATH "../"
-
 struct FileHandler
 {
     int charCount[N_ASCII];
@@ -32,14 +30,13 @@ FileHandler *newFileHandler(void)
 
 FILE *newFile(char filename[])
 {
-    char *fullpath = (char *)malloc(strlen(ROOT_PATH) + strlen(filename) + 1);
+    char *fullpath = (char *)malloc(strlen(filename) + 1);
     if (fullpath == NULL)
     {
         PRINT_ERROR("failed to allocate a file path\n");
         return NULL;
     }
 
-    strcpy(fullpath, ROOT_PATH);
     strcat(fullpath, filename);
 
     FILE *f = fopen(fullpath, "r");

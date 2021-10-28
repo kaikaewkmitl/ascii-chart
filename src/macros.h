@@ -18,7 +18,7 @@
 #define COLOR_WHITE "\033[37m"
 #define COLOR_RESET "\033[0m"
 #define BOLD_TEXT "\033[1m"
-#define PRINT_ERROR(msg) fprintf(stdout, "%s%sError: %s%s", COLOR_RED, BOLD_TEXT, msg, COLOR_RESET);
+#define PRINT_ERROR(msg) fprintf(stdout, "%s%sERROR: %s%s", COLOR_RED, BOLD_TEXT, msg, COLOR_RESET);
 
 #define CURSOR_HOME "\033[H"
 #define CLEAR_SCREEN "\033[1J"

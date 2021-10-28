@@ -40,6 +40,12 @@ int runDefaultMode(int charCount[])
 
 int runWithFilesMode(int argc, char **argv, int charCount[])
 {
+    if (argc == 2)
+    {
+        PRINT_ERROR("no input files\n");
+        return RETURN_FAILURE;
+    }
+
     for (int i = 2; i < argc; i++)
     {
         FILE *f = newFile(argv[i]);

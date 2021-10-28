@@ -135,7 +135,7 @@ void displayChart(Chart *ch)
 
     printf("%s%s", CLEAR_SCREEN, CURSOR_HOME);
 
-    printf("\n %s%sGenerated successfully%s\n\n", COLOR_GREEN, BOLD_TEXT, COLOR_RESET);
+    printf("\n %s%sGenerated Successfully%s\n\n", COLOR_GREEN, BOLD_TEXT, COLOR_RESET);
 
     printHeader(ch);
     printKeys(ch);
