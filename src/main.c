@@ -9,6 +9,8 @@ int main(int argc, char **argv)
     switch (mode)
     {
     case DefaultMode:
+        printf("%s%s", CLEAR_SCREEN, CURSOR_HOME);
+        printf("%s%sASCII Chart Generator%s\n\n", COLOR_GREEN, BOLD_TEXT, COLOR_RESET);
         if (runDefaultMode(charCount) == RETURN_FAILURE)
         {
             return EXIT_FAILURE;
@@ -32,9 +34,6 @@ int main(int argc, char **argv)
         runUnknownCmd(argc, argv);
         return EXIT_SUCCESS;
     }
-
-    printf("%s%s", CLEAR_SCREEN, CURSOR_HOME);
-    printf("%s%sASCII Chart Generator%s\n\n", COLOR_GREEN, BOLD_TEXT, COLOR_RESET);
 
     Chart *ch = newChart();
     if (ch == NULL)
