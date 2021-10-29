@@ -65,7 +65,9 @@ void runHelpMode(char **argv)
 {
     printf("ASCII Chart Generator\n");
     printf("KMITL's C-programming project\n\n");
-    printf("Usage: %s [%s files...]\n", argv[0], F_FLAG);
+    printf("Usage: %s [%s files...]\n\n", argv[0], F_FLAG);
+    printf("Example: %s %s file1.txt file2.txt\n\n", argv[0], F_FLAG);
+    printf("ASCII Chart Generator counts ASCII characters from files provided then generates a chart displaying counts of each character\n");
 }
 
 void runUnknownCmd(int argc, char **argv)
