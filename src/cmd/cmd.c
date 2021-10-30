@@ -3,6 +3,10 @@
 #define F_FLAG "-f"
 #define H_FLAG "-h"
 
+static int charCount[N_ASCII] = {0};
+
+int generateChart(void);
+
 eMode parseFlags(int argc, char **argv)
 {
     if (argc == 1)
@@ -23,8 +27,11 @@ eMode parseFlags(int argc, char **argv)
     return UnknownCmd;
 }
 
-int runDefaultMode(int charCount[])
+int runDefaultMode()
 {
+    printf("%s%s", CLEAR_SCREEN, CURSOR_HOME);
+    printf("%s%sASCII Chart Generator%s\n\n", COLOR_GREEN, BOLD_TEXT, COLOR_RESET);
+
     FileHandler *fh = newFileHandler();
     if (fh == NULL)
     {
@@ -34,11 +41,13 @@ int runDefaultMode(int charCount[])
     while (promptAndHandleFiles(fh) == RETURN_FAILURE)
         ;
 
+    // copy contents of fh->charCount to global charCount
     memcpy(charCount, getCharCount(fh), sizeof(int) * N_ASCII);
-    return RETURN_SUCCESS;
+    deleteFileHandler(fh);
+    return generateChart();
 }
 
-int runWithFilesMode(int argc, char **argv, int charCount[])
+int runWithFilesMode(int argc, char **argv)
 {
     if (argc == 2)
     {
@@ -58,7 +67,7 @@ int runWithFilesMode(int argc, char **argv, int charCount[])
         fclose(f);
     }
 
-    return RETURN_SUCCESS;
+    return generateChart();
 }
 
 void runHelpMode(char **argv)
@@ -85,4 +94,23 @@ void runUnknownCmd(int argc, char **argv)
     strcat(msg, ": unknown command\n");
     PRINT_ERROR(msg);
     printf("Try '%s %s' for help\n", argv[0], H_FLAG);
+}
+
+int generateChart(void)
+{
+    Chart *ch = newChart();
+    if (ch == NULL)
+    {
+        return RETURN_FAILURE;
+    }
+
+    if (addKeys(ch, charCount) == RETURN_FAILURE)
+    {
+        return RETURN_FAILURE;
+    }
+
+    sortChart(ch, Descending);
+    displayChart(ch);
+    deleteChart(ch);
+    return RETURN_SUCCESS;
 }

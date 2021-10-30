@@ -15,9 +15,9 @@ typedef enum eMode
 
 eMode parseFlags(int argc, char **argv);
 
-int runDefaultMode(int charCount[]);
+int runDefaultMode();
 
-int runWithFilesMode(int argc, char **argv, int charCount[]);
+int runWithFilesMode(int argc, char **argv);
 
 void runHelpMode(char **argv);
 

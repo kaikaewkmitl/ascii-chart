@@ -9,8 +9,6 @@ struct FileHandler
     int n;
 };
 
-static FileHandler *fh;
-
 void getN(FileHandler *fh);
 int handleFiles(FileHandler *fh);
 void resetCharCount(int charCount[]);
@@ -81,6 +79,14 @@ void countChars(FILE *f, int charCount[])
 int *getCharCount(FileHandler *fh)
 {
     return fh->charCount;
+}
+
+void deleteFileHandler(FileHandler *fh)
+{
+    if (fh)
+    {
+        free(fh);
+    }
 }
 
 void getN(FileHandler *fh)

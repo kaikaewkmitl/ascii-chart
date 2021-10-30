@@ -1,5 +1,4 @@
 #include "cmd/cmd.h"
-#include "chart/chart.h"
 
 int main(int argc, char **argv)
 {
@@ -9,9 +8,7 @@ int main(int argc, char **argv)
     switch (mode)
     {
     case DefaultMode:
-        printf("%s%s", CLEAR_SCREEN, CURSOR_HOME);
-        printf("%s%sASCII Chart Generator%s\n\n", COLOR_GREEN, BOLD_TEXT, COLOR_RESET);
-        if (runDefaultMode(charCount) == RETURN_FAILURE)
+        if (runDefaultMode() == RETURN_FAILURE)
         {
             return EXIT_FAILURE;
         }
@@ -19,7 +16,7 @@ int main(int argc, char **argv)
         break;
 
     case WithFilesMode:
-        if (runWithFilesMode(argc, argv, charCount) == RETURN_FAILURE)
+        if (runWithFilesMode(argc, argv) == RETURN_FAILURE)
         {
             return EXIT_FAILURE;
         }
@@ -34,21 +31,6 @@ int main(int argc, char **argv)
         runUnknownCmd(argc, argv);
         return EXIT_SUCCESS;
     }
-
-    Chart *ch = newChart();
-    if (ch == NULL)
-    {
-        return EXIT_FAILURE;
-    }
-
-    if (addKeys(ch, charCount) == RETURN_FAILURE)
-    {
-        return EXIT_FAILURE;
-    }
-
-    sortChart(ch, Descending);
-    displayChart(ch);
-    deleteChart(ch);
 
     return EXIT_SUCCESS;
 }

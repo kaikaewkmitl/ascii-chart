@@ -14,6 +14,8 @@ typedef enum eOrder
     Descending,
 } eOrder;
 
+int generateChart(void);
+
 Chart *newChart(void);
 
 int addKeys(Chart *ch, int charCount[]);

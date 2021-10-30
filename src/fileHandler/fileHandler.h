@@ -24,4 +24,6 @@ void countChars(FILE *f, int charCount[]);
 // being the value of array at that index
 int *getCharCount(FileHandler *fh);
 
+void deleteFileHandler(FileHandler *fh);
+
 #endif
