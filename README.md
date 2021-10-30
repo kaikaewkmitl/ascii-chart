@@ -31,5 +31,7 @@ the executable is called 'ascii-chart'
 ## Run
 
 ```
-./ascii-chart [-f files...]
+./ascii-chart [-f files...] [--asc]
 ```
+
+Without any flags the program would run in default mode, with messages prompting for files. With ```-f``` flag provided and files, program would skip the files prompting process and generate a chart right away. The chart is ordered in descending order by default, user can change the ordering by providing the ```--asc``` flag.
