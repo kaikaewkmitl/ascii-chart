@@ -2,29 +2,49 @@
 
 #define F_FLAG "-f"
 #define H_FLAG "-h"
+#define ASC_FLAG "--asc"
 
 static int charCount[N_ASCII] = {0};
+
+// generate chart in descending fashion by default
+static bool isDesc = true;
 
 int generateChart(void);
 
 eMode parseFlags(int argc, char **argv)
 {
-    if (argc == 1)
+    bool hasHFlag = false, hasFFlag = false;
+    for (int i = 0; i < argc; i++)
     {
-        return DefaultMode;
+        if (strcmp(H_FLAG, argv[i]) == 0)
+        {
+            hasHFlag = true;
+        }
+        else if (strcmp(F_FLAG, argv[i]) == 0)
+        {
+            hasFFlag = true;
+        }
+        else if (strcmp(ASC_FLAG, argv[i]) == 0)
+        {
+            isDesc = false;
+        }
+        else if (argv[i][0] == '-')
+        {
+            return UnknownCmd;
+        }
     }
 
-    if (strcmp(F_FLAG, argv[1]) == 0)
-    {
-        return WithFilesMode;
-    }
-
-    if (strcmp(H_FLAG, argv[1]) == 0)
+    if (hasHFlag)
     {
         return HelpMode;
     }
 
-    return UnknownCmd;
+    if (hasFFlag)
+    {
+        return WithFilesMode;
+    }
+
+    return DefaultMode;
 }
 
 int runDefaultMode()
@@ -49,13 +69,17 @@ int runDefaultMode()
 
 int runWithFilesMode(int argc, char **argv)
 {
-    if (argc == 2)
+    int i = 1;
+    for (; i < argc && argv[i][0] == '-'; i++)
+        ;
+
+    if (i == argc)
     {
         PRINT_ERROR("no input files\n");
         return RETURN_FAILURE;
     }
 
-    for (int i = 2; i < argc; i++)
+    for (; i < argc && argv[i][0] != '-'; i++)
     {
         FILE *f = newFile(argv[i]);
         if (f == NULL)
@@ -74,7 +98,7 @@ void runHelpMode(char **argv)
 {
     printf("ASCII Chart Generator\n");
     printf("KMITL's C-programming project\n\n");
-    printf("Usage: %s [%s files...]\n\n", argv[0], F_FLAG);
+    printf("Usage: %s [%s files...] [%s]\n\n", argv[0], F_FLAG, ASC_FLAG);
     printf("Example: %s %s file1.txt file2.txt\n\n", argv[0], F_FLAG);
     printf("ASCII Chart Generator counts ASCII characters from files provided then generates a chart displaying counts of each character\n");
 }
@@ -109,7 +133,15 @@ int generateChart(void)
         return RETURN_FAILURE;
     }
 
-    sortChart(ch, Descending);
+    if (isDesc)
+    {
+        sortChart(ch, Descending);
+    }
+    else
+    {
+        sortChart(ch, Ascending);
+    }
+
     displayChart(ch);
     deleteChart(ch);
     return RETURN_SUCCESS;

@@ -6,7 +6,7 @@
 #define RETURN_SUCCESS 0
 #define RETURN_FAILURE 1
 #define N_ASCII 128
-#define CHAR_LIMIT 50
+#define CHAR_LIMIT 100
 
 #define CURSOR_HOME "\033[H"
 #define CLEAR_SCREEN "\033[1J"
