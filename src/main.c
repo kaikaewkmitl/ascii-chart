@@ -2,8 +2,6 @@
 
 int main(int argc, char **argv)
 {
-    int charCount[N_ASCII] = {0};
-
     eMode mode = parseFlags(argc, argv);
     switch (mode)
     {
@@ -25,11 +23,11 @@ int main(int argc, char **argv)
 
     case HelpMode:
         runHelpMode(argv);
-        return EXIT_SUCCESS;
+        break;
 
     case UnknownCmd:
         runUnknownCmd(argc, argv);
-        return EXIT_SUCCESS;
+        break;
     }
 
     return EXIT_SUCCESS;
