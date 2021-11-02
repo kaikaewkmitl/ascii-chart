@@ -2,6 +2,8 @@
 
 int main(int argc, char **argv)
 {
+    setbuf(stdout, NULL);
+
     eMode mode = parseFlags(argc, argv);
     switch (mode)
     {
