@@ -28,16 +28,7 @@ FileHandler *newFileHandler(void)
 
 FILE *newFile(char filename[])
 {
-    char *fullpath = (char *)malloc(strlen(filename) + 1);
-    if (fullpath == NULL)
-    {
-        PRINT_ERROR("failed to allocate a file path\n");
-        return NULL;
-    }
-
-    strcat(fullpath, filename);
-
-    FILE *f = fopen(fullpath, "r");
+    FILE *f = fopen(filename, "r");
     if (f == NULL)
     {
         char msg[CHAR_LIMIT];
@@ -45,7 +36,6 @@ FILE *newFile(char filename[])
         PRINT_ERROR(msg);
     }
 
-    free(fullpath);
     return f;
 }
 
