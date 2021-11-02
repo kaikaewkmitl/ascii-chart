@@ -8,15 +8,33 @@ KMITL's C-programming project by Mahnun Saratunti (64011456)
 
 ![preview](./images/preview.png)
 
+## Requirement
+
+- CMake for building the project
+- Makefile(optional)
+- Requires global env variable COLUMNS, which is the terminal's width, to be set ([more on how to set](#setting-columns-variable))
+
 ## Install
 
 ### Using Cmake only
+
+#### For Mac:
 
 ```
 git clone https://github.com/kaikaewkmitl/ascii-chart.git
 cd ascii-chart
 mkdir build && cd build
 cmake .. && cmake --build .
+cd ..
+```
+
+#### For Bash or Powershell(with MinGW):
+
+```
+git clone https://github.com/kaikaewkmitl/ascii-chart.git
+cd ascii-chart
+mkdir build && cd build
+cmake -G "MinGW Makefiles" .. && cmake --build .
 cd ..
 ```
 
@@ -28,14 +46,18 @@ cd ascii-chart
 make build
 ```
 
-## Requirement
+### Setting COLUMNS variable
 
-Requires global environment COLUMNS(terminal's width) to be set
-
-For Mac, can be done by:
+#### To set COLUMNS in Mac or Bash:
 
 ```
 export COLUMNS
+```
+
+#### To set COLUMNS in Powershell:
+
+```
+$env:COLUMNS = $Host.UI.RawUI.WindowSize.Width
 ```
 
 ## Run
