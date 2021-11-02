@@ -49,6 +49,7 @@ Chart *newChart(void)
         return NULL;
     }
 
+    ch->len = 0;
     ch->size++;
     ch->keys = (Key *)malloc(sizeof(Key));
     if (ch->keys == NULL)
