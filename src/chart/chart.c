@@ -24,7 +24,7 @@ struct Chart
     int len;
 };
 
-static int screenWidth;
+static int screenWidth = 168;
 
 static char *COLUMNS[N_COLUMNS] = {"Keys", "Count", "Chart"};
 
@@ -34,7 +34,7 @@ void updateColumn3Width(Chart *ch);
 int addKey(Chart *ch, char keyname[], int count);
 void printHeader(Chart *ch);
 void printFooter(Chart *ch);
-void printKeys(Chart *ch);
+void printKeys(Chart *ch, bool isUnicode);
 void printNewRow(Chart *ch);
 void printStrNTimes(char str[], int n);
 int cmpAscending(const void *a, const void *b);
@@ -66,11 +66,13 @@ Chart *newChart(void)
     char *width = getenv("COLUMNS");
     if (width == NULL)
     {
-        PRINT_ERROR("COLUMNS env variable is not defined\n");
-        return NULL;
+        PRINT_ERROR("COLUMNS env variable is not defined, proceed to use default value for screen width (168) \n");
+    }
+    else
+    {
+        screenWidth = atoi(width);
     }
 
-    screenWidth = atoi(width);
     return ch;
 }
 
@@ -128,7 +130,7 @@ void sortChart(Chart *ch, eOrder order)
     }
 }
 
-void displayChart(Chart *ch)
+void displayChart(Chart *ch, bool isUnicode)
 {
     updateColumn1Width(ch);
     updateColumn2Width(ch);
@@ -139,7 +141,7 @@ void displayChart(Chart *ch)
     printf("\n %s%sGenerated Successfully%s\n\n", COLOR_GREEN, BOLD_TEXT, COLOR_RESET);
 
     printHeader(ch);
-    printKeys(ch);
+    printKeys(ch, isUnicode);
     printFooter(ch);
 }
 
@@ -235,7 +237,7 @@ void printFooter(Chart *ch)
     printf("\n");
 }
 
-void printKeys(Chart *ch)
+void printKeys(Chart *ch, bool isUnicode)
 {
     for (int i = 0; i < ch->len; i++)
     {
@@ -265,7 +267,14 @@ void printKeys(Chart *ch)
 
         // 1 padding + 1 column divider
         printf("| %s%s", COLOR_BLACK, BOLD_TEXT);
-        printStrNTimes(BAR, n);
+        if (isUnicode)
+        {
+            printStrNTimes(BAR, n);
+        }
+        else
+        {
+            printStrNTimes("#", n);
+        }
         printf("%s\n", COLOR_RESET);
     }
 }

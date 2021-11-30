@@ -3,6 +3,7 @@
 
 #include <string.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 #include "../macros.h"
 
@@ -24,7 +25,7 @@ int addKeys(Chart *ch, int charCount[]);
 // or descending order
 void sortChart(Chart *ch, eOrder order);
 
-void displayChart(Chart *ch);
+void displayChart(Chart *ch, bool isUnicode);
 
 void deleteChart(Chart *ch);
 

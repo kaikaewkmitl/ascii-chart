@@ -3,11 +3,13 @@
 #define F_FLAG "-f"
 #define H_FLAG "-h"
 #define ASC_FLAG "--asc"
+#define U_FLAG "-u"
 
 static int charCount[N_ASCII] = {0};
 
 // generate chart in descending fashion by default
 static bool isDesc = true;
+static bool isUnicode = false;
 
 int generateChart(void);
 
@@ -27,6 +29,10 @@ eMode parseFlags(int argc, char **argv)
         else if (strcmp(ASC_FLAG, argv[i]) == 0)
         {
             isDesc = false;
+        }
+        else if (strcmp(U_FLAG, argv[i]) == 0)
+        {
+            isUnicode = true;
         }
         else if (argv[i][0] == '-')
         {
@@ -142,7 +148,7 @@ int generateChart(void)
         sortChart(ch, Ascending);
     }
 
-    displayChart(ch);
+    displayChart(ch, isUnicode);
     deleteChart(ch);
     return RETURN_SUCCESS;
 }
