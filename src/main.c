@@ -4,7 +4,11 @@ int main(int argc, char **argv)
 {
     setbuf(stdout, NULL);
 #if defined(_WIN32)
-    system("cls");
+    char *shell = getenv("SHELL");
+    if (shell == NULL or strcmp(shell, "/usr/bin/bash") != 0)
+    {
+        system("cls");
+    }
 #endif
 
     eMode mode = parseFlags(argc, argv);
