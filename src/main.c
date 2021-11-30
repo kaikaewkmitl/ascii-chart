@@ -3,6 +3,9 @@
 int main(int argc, char **argv)
 {
     setbuf(stdout, NULL);
+#if defined(_WIN32)
+    system("cls");
+#endif
 
     eMode mode = parseFlags(argc, argv);
     switch (mode)

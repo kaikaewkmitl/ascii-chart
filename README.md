@@ -28,7 +28,7 @@ cmake .. && cmake --build .
 cd ..
 ```
 
-#### For Bash or Powershell(with MinGW):
+#### For Bash, Powershell or Command Prompt(with MinGW):
 
 ```
 git clone https://github.com/kaikaewkmitl/ascii-chart.git
@@ -37,6 +37,8 @@ mkdir build && cd build
 cmake -G "MinGW Makefiles" .. && cmake --build .
 cd ..
 ```
+
+to enable unicode in Powershell or Command Prompt, enter ```chcp 65001``` into the shell in the project directory
 
 ### Using Makefile and Cmake
 
