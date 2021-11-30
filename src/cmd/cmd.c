@@ -1,8 +1,8 @@
 #include "cmd.h"
 
+#define A_FLAG "-a"
 #define F_FLAG "-f"
 #define H_FLAG "-h"
-#define ASC_FLAG "--asc"
 #define U_FLAG "-u"
 
 static int charCount[N_ASCII] = {0};
@@ -26,7 +26,7 @@ eMode parseFlags(int argc, char **argv)
         {
             hasFFlag = true;
         }
-        else if (strcmp(ASC_FLAG, argv[i]) == 0)
+        else if (strcmp(A_FLAG, argv[i]) == 0)
         {
             isDesc = false;
         }
@@ -104,9 +104,14 @@ void runHelpMode(char **argv)
 {
     printf("ASCII Chart Generator\n");
     printf("KMITL's C-programming project\n\n");
-    printf("Usage: %s [%s files...] [%s]\n\n", argv[0], F_FLAG, ASC_FLAG);
+    printf("ASCII Chart Generator counts ASCII characters from files provided then generates a chart displaying counts of each character\n\n");
+    printf("Usage: %s [%s files...] [%s] [%s]\n\n", argv[0], F_FLAG, A_FLAG, U_FLAG);
     printf("Example: %s %s file1.txt file2.txt\n\n", argv[0], F_FLAG);
-    printf("ASCII Chart Generator counts ASCII characters from files provided then generates a chart displaying counts of each character\n");
+    printf("Options: \n");
+    printf("    %s          sorts the chart in ascending order (default is descending order)\n", A_FLAG);
+    printf("    %s          append file names after this flag. Program will skip the prompts process\n", F_FLAG);
+    printf("    %s          displays available options\n", H_FLAG);
+    printf("    %s          displays chart in unicode mode (default is ASCII mode)\n\n", U_FLAG);
 }
 
 void runUnknownCmd(int argc, char **argv)
