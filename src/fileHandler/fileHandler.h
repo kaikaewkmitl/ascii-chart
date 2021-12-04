@@ -11,6 +11,7 @@ typedef struct FileHandler FileHandler;
 
 FileHandler *newFileHandler(void);
 
+// just fopen on r mode with error checking
 FILE *newFile(char filename[]);
 
 // handles all files reading and counting

@@ -4,9 +4,11 @@ int main(int argc, char **argv)
 {
     setbuf(stdout, NULL);
 #if defined(_WIN32)
+    // distinguish between Powershell/Cmd and Bash
     char *shell = getenv("SHELL");
-    if (shell == NULL or strcmp(shell, "/usr/bin/bash") != 0)
+    if (shell == NULL)
     {
+        // Powershell/Cmd need this to enable ANSI escape colors
         system("cls");
     }
 #endif
