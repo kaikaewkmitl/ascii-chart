@@ -2,7 +2,6 @@
 
 #define N_COLUMNS 3
 #define GROWTH_FACTOR 2
-#define BAR "█"
 #define STDOUT_FILENO 1
 
 typedef struct Key
@@ -269,7 +268,7 @@ void printKeys(Chart *ch, bool isUnicode)
         printf("| %s%s", COLOR_BLACK, BOLD_TEXT);
         if (isUnicode)
         {
-            printStrNTimes(BAR, n);
+            printStrNTimes("█", n);
         }
         else
         {
