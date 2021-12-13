@@ -9,7 +9,6 @@ typedef struct Key
     char keyname[CHAR_LIMIT];
     int count;
     int countDigit;
-    float percentage;
 } Key;
 
 struct Chart
